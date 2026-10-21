@@ -5,21 +5,53 @@
     "theme": "Deep Learning",
     "title": "TP1 · Régression",
     "description": "Construire un premier réseau de neurones pour prédire une valeur continue.",
-    "tags": ["Keras", "régression", "MSE"],
-    "audience": ["individuel", "groupe"],
+    "tags": [
+      "Keras",
+      "régression",
+      "MSE"
+    ],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
     "duration": "45 min",
     "status": "review",
-    "objectives": ["Préparer des variables numériques pour l’apprentissage.", "Construire et entraîner un modèle de régression avec Keras.", "Interpréter une erreur quadratique sur des données de test."],
+    "objectives": [
+      "Préparer des variables numériques pour l’apprentissage.",
+      "Construire et entraîner un modèle de régression avec Keras.",
+      "Interpréter une erreur quadratique sur des données de test."
+    ],
     "concepts": [
-      {"title": "Prédire une quantité", "body": "En régression, la cible est numérique et continue. Le modèle produit une valeur, par exemple un prix ou une mesure."},
-      {"title": "Fonction de perte", "body": "La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, après élévation au carré. Une erreur importante est ainsi davantage pénalisée."},
-      {"title": "Échelle des variables", "body": "La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise."}
+      {
+        "title": "Prédire une quantité",
+        "body": "En régression, la cible est numérique et continue. Le modèle produit une valeur, par exemple un prix ou une mesure."
+      },
+      {
+        "title": "Fonction de perte",
+        "body": "La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, après élévation au carré. Une erreur importante est ainsi davantage pénalisée."
+      },
+      {
+        "title": "Échelle des variables",
+        "body": "La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise."
+      }
     ],
     "example": "Pour prédire une consommation à partir de plusieurs mesures, la couche de sortie est généralement un neurone à activation linéaire : la prédiction n’est pas bornée entre 0 et 1.",
-    "exercises": ["Repérer la variable cible et les variables d’entrée du jeu de données.", "Comparer la perte d’entraînement et la perte de validation après plusieurs époques.", "Expliquer dans l’unité de la cible ce que représente une erreur de prédiction."],
+    "exercises": [
+      "Repérer la variable cible et les variables d’entrée du jeu de données.",
+      "Comparer la perte d’entraînement et la perte de validation après plusieurs époques.",
+      "Expliquer dans l’unité de la cible ce que représente une erreur de prédiction."
+    ],
     "resources": [
-      {"label": "Ouvrir le notebook HTML", "path": "cours/tp1-regression/tp1_regression.html", "kind": "read"},
-      {"label": "Télécharger le notebook", "path": "cours/tp1-regression/tp1_regression.ipynb", "kind": "download"}
+      {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp1-regression/tp1_regression.html",
+        "kind": "read"
+      },
+      {
+        "label": "Télécharger le notebook",
+        "path": "cours/tp1-regression/tp1_regression.ipynb",
+        "kind": "download"
+      }
     ],
     "quizId": "reg"
   },
@@ -29,19 +61,77 @@
     "theme": "Deep Learning",
     "title": "TP2 · Classification binaire",
     "description": "Prédire l’une de deux classes et lire les métriques d’évaluation.",
-    "tags": ["Keras", "classification", "sigmoïde"],
-    "audience": ["individuel", "groupe"],
-    "duration": "45 min",
-    "status": "review",
-    "objectives": ["Distinguer une tâche de classification d’une régression.", "Relier sortie sigmoïde, seuil et classe prédite.", "Lire une matrice de confusion."],
-    "concepts": [
-      {"title": "Probabilité de classe", "body": "Une sortie sigmoïde fournit une valeur entre 0 et 1. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe."},
-      {"title": "Entropie croisée binaire", "body": "binary_crossentropy pénalise les probabilités attribuées aux classes réelles. Elle est adaptée à une sortie binaire."},
-      {"title": "Matrice de confusion", "body": "Elle compare classe réelle et classe prédite pour distinguer vrais positifs, faux positifs, vrais négatifs et faux négatifs."}
+    "tags": [
+      "Keras",
+      "classification",
+      "sigmoïde",
+      "matrice de confusion",
+      "ROC"
     ],
-    "example": "Une probabilité de 0,82 avec un seuil de 0,5 conduit à prédire la classe positive. Changer le seuil modifie le compromis entre faux positifs et faux négatifs.",
-    "exercises": ["Identifier la classe positive et la sortie du modèle.", "Calculer précision et rappel à partir d’une matrice de confusion.", "Comparer accuracy et rappel lorsque les classes sont déséquilibrées."],
-    "resources": [{"label": "Notebook source", "path": "cours/tp2-binaire/tp2_classification_binaire.ipynb", "kind": "download"}],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Demi-journée",
+    "status": "review",
+    "objectives": [
+      "Construire un réseau de classification binaire : sortie sigmoïde, perte binary_crossentropy.",
+      "Découper et standardiser les données avec les statistiques de l’apprentissage seul.",
+      "Lire une matrice de confusion et calculer précision et rappel à la main.",
+      "Déplacer le seuil de décision, comprendre le compromis entre faux positifs et faux négatifs, et lire une courbe ROC."
+    ],
+    "concepts": [
+      {
+        "title": "Probabilité de classe",
+        "body": "Une sortie sigmoïde fournit une valeur entre 0 et 1. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe."
+      },
+      {
+        "title": "Découper et standardiser",
+        "body": "Le jeu de test ne doit jamais être vu pendant l’ajustement : le StandardScaler est ajusté sur le seul jeu d’apprentissage, puis appliqué tel quel au test."
+      },
+      {
+        "title": "La référence à battre",
+        "body": "Une régression logistique (LogisticRegression) donne un score de référence très simple. Un réseau ne vaut la peine que s’il dépasse cette référence."
+      },
+      {
+        "title": "Entropie croisée binaire",
+        "body": "binary_crossentropy pénalise les probabilités attribuées aux classes réelles. Elle est adaptée à une sortie binaire."
+      },
+      {
+        "title": "Construire le réseau",
+        "body": "Des couches denses avec activation ReLU, puis un neurone unique avec sigmoïde en sortie : une seule probabilité à interpréter."
+      },
+      {
+        "title": "Entraîner avec arrêt précoce",
+        "body": "EarlyStopping surveille la perte de validation : l’entraînement s’arrête quand elle cesse de s’améliorer et les meilleurs poids sont restaurés."
+      },
+      {
+        "title": "Matrice de confusion",
+        "body": "Comparée à la main sur le test : VP, VN, FP, FN. Précision = « quand j’annonce, ai-je raison ? ». Rappel = « combien en ai-je retrouvé ? »."
+      },
+      {
+        "title": "Le seuil de décision",
+        "body": "Le déplacer règle le compromis précision/rappel : monter le seuil réduit les faux positifs mais augmente les faux négatifs. Le contexte décide de l’erreur la plus grave."
+      },
+      {
+        "title": "La courbe ROC",
+        "body": "Elle trace le taux de vrais positifs contre le taux de faux positifs pour tous les seuils. L’AUC résume cette courbe en un seul chiffre."
+      }
+    ],
+    "example": "Sur des mesures de tumeurs (load_breast_cancer) : entraîner le réseau avec EarlyStopping, prédire une probabilité (par exemple 0,82) et la comparer au seuil 0,5 pour annoncer « maligne ». Recompter FP et FN dans la matrice, puis monter le seuil à 0,7 : les faux négatifs augmentent pendant que les faux positifs baissent. La courbe ROC trace ce compromis pour tous les seuils possibles.",
+    "exercises": [
+      "Recalculer à la main précision et rappel à partir de la matrice affichée dans le notebook.",
+      "Déplacer le seuil (0,3 et 0,7) et consigner l’effet exact sur les faux positifs et les faux négatifs.",
+      "Comparer accuracy d’une régression logistique et du réseau ; expliquer l’écart ou son absence.",
+      "Expliquer, dans un contexte médical, quel type d’erreur coûte le plus cher et pourquoi."
+    ],
+    "resources": [
+      {
+        "label": "Notebook source",
+        "path": "cours/tp2-binaire/tp2_classification_binaire.ipynb",
+        "kind": "download"
+      }
+    ],
     "quizId": "clf"
   },
   {
@@ -50,19 +140,72 @@
     "theme": "Deep Learning",
     "title": "TP3 · Classification multiclasse",
     "description": "Étendre la classification à plusieurs catégories avec une sortie softmax.",
-    "tags": ["Keras", "softmax", "multiclasse"],
-    "audience": ["individuel", "groupe"],
-    "duration": "45 min",
-    "status": "review",
-    "objectives": ["Configurer une sortie à plusieurs classes.", "Choisir une perte selon le format des étiquettes.", "Analyser les confusions entre catégories."],
-    "concepts": [
-      {"title": "Softmax", "body": "La fonction softmax transforme les scores de sortie en probabilités dont la somme vaut 1."},
-      {"title": "Étiquettes entières", "body": "Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot."},
-      {"title": "Évaluation par classe", "body": "L’accuracy globale ne révèle pas toutes les erreurs ; une matrice de confusion permet de voir quelles catégories se ressemblent pour le modèle."}
+    "tags": [
+      "Keras",
+      "classification",
+      "softmax",
+      "digits",
+      "matrice de confusion"
     ],
-    "example": "Pour dix classes, une couche dense de dix neurones avec softmax produit une probabilité pour chacune des dix catégories.",
-    "exercises": ["Vérifier la forme de la couche de sortie par rapport au nombre de classes.", "Comparer étiquettes entières et encodage one-hot.", "Repérer la paire de classes la plus fréquemment confondue."],
-    "resources": [{"label": "Notebook source", "path": "cours/tp3-multiclasses/tp3_multiclasses.ipynb", "kind": "download"}],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Demi-journée",
+    "status": "review",
+    "objectives": [
+      "Passer de 2 à 10 classes : couche de sortie softmax, perte sparse_categorical_crossentropy.",
+      "Aplatir une image pour l’entrer dans un réseau dense et mesurer ce qu’on y perd.",
+      "Lire une matrice de confusion à 10 classes et regarder les erreurs du modèle pour les comprendre."
+    ],
+    "concepts": [
+      {
+        "title": "Softmax",
+        "body": "La fonction softmax transforme les scores de sortie en probabilités dont la somme vaut 1. La couche de sortie compte autant de neurones que de classes."
+      },
+      {
+        "title": "Étiquettes entières",
+        "body": "Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot."
+      },
+      {
+        "title": "La référence",
+        "body": "La réponse du réseau est l’argmax des probabilités. Avant tout entraînement, les dix probabilités tournent autour de 0,1 : le réseau ne sait encore rien."
+      },
+      {
+        "title": "Des images aplaties",
+        "body": "Chaque image 8×8 de load_digits est mise à plat en vecteur de 64 valeurs pour un réseau dense. La géométrie spatiale est perdue : c’est ce que le TP4 corrigera."
+      },
+      {
+        "title": "Courbes d’apprentissage",
+        "body": "On suit accuracy et perte sur les jeux d’apprentissage et de validation, époque après époque, avant de se prononcer."
+      },
+      {
+        "title": "Évaluer sur le test",
+        "body": "Le test est utilisé une fois, à la fin, pour mesurer la généralisation réelle du modèle entraîné."
+      },
+      {
+        "title": "Matrice de confusion à 10 classes",
+        "body": "Affichée en image, elle révèle les paires de chiffres que le modèle confond le plus souvent."
+      },
+      {
+        "title": "Regarder les erreurs",
+        "body": "Afficher les images mal classées est aussi important que lire la précision : cela montre si l’erreur était plausible."
+      }
+    ],
+    "example": "Reconnaître des chiffres écrits à la main (load_digits, 10 classes) : réseau dense, couche de sortie de 10 neurones en softmax, perte sparse_categorical_crossentropy sans encodage one-hot. Avant l’entraînement, le réseau répond environ 10 % sur chaque classe. Après l’entraînement, la matrice de confusion visuelle fait ressortir les paires de chiffres confondues, et l’affichage des images mal prédites permet de voir pourquoi.",
+    "exercises": [
+      "Vérifier la forme de la couche de sortie par rapport au nombre de classes.",
+      "Comparer le score de la régression logistique de référence (LogisticRegression) à celui du réseau.",
+      "Afficher trois images mal classées et expliquer en quoi l’erreur était plausible.",
+      "Repérer dans la matrice la paire de classes la plus souvent confondue."
+    ],
+    "resources": [
+      {
+        "label": "Notebook source",
+        "path": "cours/tp3-multiclasses/tp3_multiclasses.ipynb",
+        "kind": "download"
+      }
+    ],
     "quizId": "clf"
   },
   {
@@ -71,19 +214,68 @@
     "theme": "Deep Learning",
     "title": "TP4 · Réseaux convolutifs",
     "description": "Découvrir comment les filtres convolutifs apprennent des motifs dans les images.",
-    "tags": ["CNN", "images", "convolution"],
-    "audience": ["individuel", "groupe"],
-    "duration": "50 min",
-    "status": "review",
-    "objectives": ["Décrire le rôle d’un filtre convolutif.", "Comprendre le sous-échantillonnage avec pooling.", "Relier dimensions d’entrée et formes intermédiaires."],
-    "concepts": [
-      {"title": "Convolution", "body": "Un filtre partagé parcourt l’image et répond à des motifs locaux, comme des bords ou des textures."},
-      {"title": "Max pooling", "body": "Le pooling réduit la résolution spatiale en conservant une valeur représentative dans chaque zone."},
-      {"title": "Apprentissage hiérarchique", "body": "Les couches successives combinent des motifs simples en représentations plus complexes."}
+    "tags": [
+      "Keras",
+      "CNN",
+      "convolution",
+      "pooling",
+      "robustesse"
     ],
-    "example": "Une convolution 3 × 3 apprend un petit détecteur local. Les mêmes poids étant réutilisés à chaque position, le nombre de paramètres reste inférieur à celui d’une connexion dense sur chaque pixel.",
-    "exercises": ["Suivre la forme d’un tenseur après convolution et pooling.", "Expliquer l’effet du nombre de filtres sur la profondeur de sortie.", "Comparer le nombre de paramètres d’une couche dense et d’une convolution."],
-    "resources": [{"label": "Notebook source", "path": "cours/tp4-cnn/tp4_cnn.ipynb", "kind": "download"}],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Demi-journée",
+    "status": "review",
+    "objectives": [
+      "Comprendre ce qu’est une convolution (un filtre qui glisse sur l’image) et un pooling.",
+      "Construire un CNN (Conv2D, MaxPooling2D, Flatten) et compter ses paramètres.",
+      "Comparer honnêtement un CNN à un réseau dense, sur des images propres puis décalées d’un pixel."
+    ],
+    "concepts": [
+      {
+        "title": "Remettre les images en forme",
+        "body": "Les vecteurs aplatis du TP3 sont remis en cartes 8×8×1 : c’est la forme d’entrée attendue par une couche Conv2D."
+      },
+      {
+        "title": "Convolution",
+        "body": "Un filtre 3×3 partagé parcourt l’image (convolve2d pour l’essayer à la main) et répond à des motifs locaux comme des bords ou des traits."
+      },
+      {
+        "title": "Max pooling",
+        "body": "Le pooling réduit la résolution spatiale en conservant une valeur représentative dans chaque zone : la carte devient plus petite, l’information essentielle reste."
+      },
+      {
+        "title": "Construire le CNN",
+        "body": "Conv2D, puis MaxPooling2D, puis Flatten, puis Dense. Les mêmes poids sont réutilisés à chaque position : il y a beaucoup moins de paramètres qu’une couche dense sur les pixels."
+      },
+      {
+        "title": "Apprentissage hiérarchique",
+        "body": "Les couches successives combinent des motifs simples (bords) en représentations plus complexes (boucles, formes)."
+      },
+      {
+        "title": "Comparer honnêtement",
+        "body": "Sur de petites images propres et bien centrées, le CNN peut faire à peu près comme le réseau dense : pas de magie automatique."
+      },
+      {
+        "title": "Le test du décalage",
+        "body": "Décaler les chiffres d’un pixel (np.roll) fait s’effondrer un modèle entraîné sur des images trop bien centrées. Tester la robustesse est indispensable."
+      }
+    ],
+    "example": "Appliquer à la main un filtre 3×3 sur une image (convolve2d) pour voir ce qu’une convolution détecte. Puis le CNN complet : Conv2D (par exemple 8 filtres), MaxPooling2D, Flatten, Dense. Comparer le nombre de paramètres avec le réseau dense du TP3 : le CNN est souvent plus léger en même temps que plus précis. Enfin, décaler chaque image d’un pixel et mesurer la chute des deux modèles.",
+    "exercises": [
+      "Suivre la forme du tenseur après convolution, pooling et flatten.",
+      "Compter et comparer les paramètres d’une couche dense et d’une couche convolutive.",
+      "Décaler les images d’un pixel et noter la chute de précision des deux modèles, CNN contre dense.",
+      "Extraire les poids de la première couche convolutive (get_weights) et deviner ce que chaque filtre cherche."
+    ],
+    "resources": [
+      {
+        "label": "Notebook source",
+        "path": "cours/tp4-cnn/tp4_cnn.ipynb",
+        "kind": "download"
+      }
+    ],
     "quizId": "cnn"
   },
   {
@@ -92,19 +284,73 @@
     "theme": "Deep Learning",
     "title": "TP5 · Régularisation",
     "description": "Repérer le surapprentissage et tester des stratégies pour mieux généraliser.",
-    "tags": ["dropout", "early stopping", "validation"],
-    "audience": ["individuel", "groupe"],
-    "duration": "45 min",
-    "status": "review",
-    "objectives": ["Comparer les performances entraînement et validation.", "Expliquer le rôle de Dropout.", "Configurer l’arrêt anticipé sur une métrique de validation."],
-    "concepts": [
-      {"title": "Surapprentissage", "body": "Un modèle qui s’améliore sur l’entraînement mais se dégrade sur des données non vues mémorise en partie ses exemples."},
-      {"title": "Dropout", "body": "Pendant l’entraînement, Dropout désactive aléatoirement une partie des activations afin de limiter les dépendances excessives."},
-      {"title": "Early stopping", "body": "L’entraînement peut s’arrêter lorsque la métrique de validation cesse de s’améliorer ; les meilleurs poids peuvent être restaurés."}
+    "tags": [
+      "Keras",
+      "overfitting",
+      "dropout",
+      "L2",
+      "augmentation de données"
     ],
-    "example": "Si la perte d’entraînement baisse encore alors que la perte de validation remonte, l’écart est un indice de surapprentissage à examiner.",
-    "exercises": ["Tracer les pertes d’entraînement et de validation.", "Comparer un modèle avec et sans Dropout.", "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés."],
-    "resources": [{"label": "Notebook source", "path": "cours/tp5-regularisation/tp5_regularisation.ipynb", "kind": "download"}],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Demi-journée",
+    "status": "review",
+    "objectives": [
+      "Provoquer puis reconnaître le surapprentissage sur des courbes de perte.",
+      "Appliquer et comparer quatre remèdes : arrêt précoce, dropout, L2, réseau plus petit.",
+      "Distinguer un gain réel du bruit : taille du test et variabilité entre graines.",
+      "Fabriquer de nouvelles données par augmentation, sans jamais toucher au test."
+    ],
+    "concepts": [
+      {
+        "title": "Surapprentissage",
+        "body": "Un modèle qui s’améliore sur l’entraînement mais se dégrade sur des données non vues mémorise en partie ses exemples."
+      },
+      {
+        "title": "Regarder la perte, pas la précision",
+        "body": "La précision peut rester stable pendant que la perte de validation remonte : les courbes de perte sont l’indicateur fiable."
+      },
+      {
+        "title": "Un petit jeu pour provoquer",
+        "body": "Avec peu d’exemples et un long entraînement, le surapprentissage apparaît vite : parfait sur l’entraînement, mauvais sur la validation."
+      },
+      {
+        "title": "Remèdes à comparer",
+        "body": "Arrêt précoce (EarlyStopping), dropout, pénalité L2 (kernel_regularizer=regularizers.l2), réseau plus petit, ou plus de données. Tous se comparent sur la validation."
+      },
+      {
+        "title": "Dropout",
+        "body": "Pendant l’entraînement, Dropout désactive aléatoirement une partie des activations afin de limiter les dépendances excessives."
+      },
+      {
+        "title": "Le bruit de la mesure",
+        "body": "La marge 1,96 × √(p(1−p)/n) donne l’incertitude d’une proportion : un gain n’existe que s’il dépasse cette marge sur le test."
+      },
+      {
+        "title": "La graine",
+        "body": "Avec set_random_seed, relancer l’entraînement change le résultat : répéter sur plusieurs graines et comparer moyenne et écart-type, pas une seule exécution."
+      },
+      {
+        "title": "Augmentation de données",
+        "body": "Fabriquer des exemples décalés (np.roll) ou bruités apprend au modèle à ignorer ces variations. On n’augmente jamais le jeu de test."
+      }
+    ],
+    "example": "Sur un petit jeu, entraîner longtemps sans remède : la perte d’entraînement baisse alors que celle de validation remonte. Relancer avec EarlyStopping, puis avec Dropout, puis avec L2, puis en réduisant la couche : chaque variante se compare sur la validation. Ensuite, calculer la marge de bruit : une différence de précision inférieure à cette marge n’est pas un gain.",
+    "exercises": [
+      "Tracer les pertes d’entraînement et de validation et localiser le moment où le surapprentissage commence.",
+      "Comparer un modèle avec et sans Dropout, puis avec et sans pénalité L2.",
+      "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés.",
+      "Calculer la marge de bruit du jeu de test et décider si l’amélioration d’un remède en fait partie."
+    ],
+    "resources": [
+      {
+        "label": "Notebook source",
+        "path": "cours/tp5-regularisation/tp5_regularisation.ipynb",
+        "kind": "download"
+      }
+    ],
     "quizId": "reg2"
   },
   {
@@ -113,22 +359,82 @@
     "theme": "Deep Learning",
     "title": "TP6 · Hyperparamètres et compression",
     "description": "Explorer des réglages de modèle et découvrir des formats de déploiement compacts.",
-    "tags": ["Keras Tuner", "hyperparamètres", "TensorFlow Lite"],
-    "audience": ["individuel", "groupe"],
-    "duration": "60 min",
-    "status": "review",
-    "objectives": ["Distinguer paramètres appris et hyperparamètres.", "Décrire une recherche d’hyperparamètres.", "Identifier les artefacts d’un export de modèle."],
-    "concepts": [
-      {"title": "Hyperparamètres", "body": "La taille des couches ou le taux d’apprentissage sont fixés avant l’entraînement et peuvent être comparés par une recherche structurée."},
-      {"title": "Validation", "body": "Les essais se comparent sur une métrique de validation ; le jeu de test reste réservé à l’évaluation finale."},
-      {"title": "Compression et export", "body": "La quantification peut réduire la taille d’un modèle et ses besoins de calcul, avec un compromis possible sur la précision."}
+    "tags": [
+      "Keras",
+      "hyperparamètres",
+      "Keras Tuner",
+      "élagage",
+      "TensorFlow Lite"
     ],
-    "example": "Une recherche peut tester plusieurs taux d’apprentissage et tailles de couches, puis sélectionner la configuration qui minimise la perte de validation.",
-    "exercises": ["Lister les hyperparamètres réellement explorés dans le notebook.", "Comparer taille et précision du modèle avant et après quantification.", "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai."],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Journée",
+    "status": "review",
+    "objectives": [
+      "Distinguer paramètres (appris par le modèle) et hyperparamètres (choisis par vous : lr, neurones, couches, dropout, batch).",
+      "Conduire une recherche aléatoire d’hyperparamètres et trier les essais sur la validation, jamais sur le test.",
+      "Valider une configuration sur plusieurs graines et ne compter que les gains qui dépassent le bruit.",
+      "Compresser un modèle : élagage puis quantification TensorFlow Lite, et chiffrer le compromis précision/taille."
+    ],
+    "concepts": [
+      {
+        "title": "Hyperparamètres",
+        "body": "Taux d’apprentissage, taille des couches, dropout, batch : tout ce qui est fixé avant l’entraînement, par opposition aux poids que le modèle apprend."
+      },
+      {
+        "title": "Explorer le taux d’apprentissage",
+        "body": "Le premier réglage à tester : trop grand, l’entraînement diverge ; trop petit, il stagne. On observe l’effet direct sur les courbes."
+      },
+      {
+        "title": "Recherche aléatoire",
+        "body": "Tirer des configurations au hasard (random.choice), entraîner chaque essai, classer les résultats par perte de validation (pd.DataFrame.sort_values). Keras Tuner (RandomSearch) automatise la même démarche."
+      },
+      {
+        "title": "Validation, jamais le test",
+        "body": "Les essais se comparent sur une métrique de validation. Le jeu de test sert une seule fois, à la fin, pour évaluer le modèle retenu."
+      },
+      {
+        "title": "Plusieurs graines",
+        "body": "Une configuration retenue doit être réentraînée avec plusieurs graines : seule la moyenne, comparée à l’écart-type, décide si le gain est réel."
+      },
+      {
+        "title": "Élagage (pruning)",
+        "body": "Mettre à zéro une partie des poids (par exemple 80 %) donne un modèle creux : presque aucune perte de précision, et un poids total exploitable pour la compression."
+      },
+      {
+        "title": "Quantification",
+        "body": "tf.lite.TFLiteConverter enregistre un modèle TensorFlow Lite où les poids 32 bits deviennent 8 bits : fichier bien plus léger, précision à comparer avec Interpreter."
+      },
+      {
+        "title": "Le compromis à chiffrer",
+        "body": "Pour chaque version (départ, meilleure config, élaguée, quantifiée) : précision sur le test et taille du fichier (os.path.getsize). Un gain ne compte que s’il dépasse le bruit."
+      }
+    ],
+    "example": "Modèle de départ : 2 couches, 32 neurones, lr = 0,001. La recherche aléatoire teste plusieurs taux d’apprentissage et tailles de couches, classe les essais sur la validation puis la meilleure configuration est revérifiée sur plusieurs graines. Enfin : élagage (80 % des poids à zéro), quantification en .tflite, et un tableau final qui met face à face précision du test et taille du fichier pour chaque version.",
+    "exercises": [
+      "Compléter le tableau de synthèse du notebook (précision de test et taille pour chaque version du modèle).",
+      "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai.",
+      "Comparer taille et précision du modèle avant et après quantification.",
+      "Décider, chiffres en main, si le gain de la meilleure configuration est réel ou du même ordre que le bruit."
+    ],
     "resources": [
-      {"label": "Notebook source", "path": "cours/tp6-hyperparametres/tp6_hyperparametres_compression.ipynb", "kind": "download"},
-      {"label": "Modèle Keras", "path": "cours/tp6-hyperparametres/modele_final.keras", "kind": "download"},
-      {"label": "Modèle TensorFlow Lite", "path": "cours/tp6-hyperparametres/modele_quantifie.tflite", "kind": "download"}
+      {
+        "label": "Notebook source",
+        "path": "cours/tp6-hyperparametres/tp6_hyperparametres_compression.ipynb",
+        "kind": "download"
+      },
+      {
+        "label": "Modèle Keras",
+        "path": "cours/tp6-hyperparametres/modele_final.keras",
+        "kind": "download"
+      },
+      {
+        "label": "Modèle TensorFlow Lite",
+        "path": "cours/tp6-hyperparametres/modele_quantifie.tflite",
+        "kind": "download"
+      }
     ],
     "quizId": "reg2"
   },
@@ -138,21 +444,72 @@
     "theme": "Deep Learning",
     "title": "TP7 · Texte et NLP",
     "description": "Préparer des textes et construire une représentation exploitable pour la classification.",
-    "tags": ["NLP", "spaCy", "TF-IDF"],
-    "audience": ["individuel", "groupe"],
-    "duration": "60 min",
-    "status": "review",
-    "objectives": ["Décrire les étapes d’un prétraitement textuel.", "Distinguer tokenisation et lemmatisation.", "Interpréter une représentation TF-IDF."],
-    "concepts": [
-      {"title": "Tokenisation", "body": "Le texte est séparé en unités comme les mots et la ponctuation, qui deviennent les éléments d’un traitement ultérieur."},
-      {"title": "Lemmatisation", "body": "Des formes fléchies sont rapprochées de leur lemme pour réduire les variantes d’un même mot."},
-      {"title": "TF-IDF", "body": "Cette pondération valorise les termes fréquents dans un document mais relativement rares dans le corpus."}
+    "tags": [
+      "spaCy",
+      "NLTK",
+      "NLP",
+      "TF-IDF",
+      "prétraitement"
     ],
-    "example": "Un terme présent dans presque tous les avis distingue peu un document ; un terme fréquent dans un avis mais rare dans les autres peut être plus informatif.",
-    "exercises": ["Suivre un texte à travers tokenisation et lemmatisation.", "Comparer les termes les plus pondérés dans deux documents.", "Vérifier que les données de test ne sont pas utilisées pour ajuster le vectoriseur."],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
+    "duration": "Demi-journée",
+    "status": "review",
+    "objectives": [
+      "Expliquer pourquoi un modèle ne lit pas du texte brut et construire un pipeline de prétraitement complet.",
+      "Distinguer racine (PorterStemmer, NLTK) et lemme (spaCy), et extraire des entités nommées",
+      "Transformer le texte en nombres (TF-IDF) et mesurer honnêtement ce que le prétraitement apporte sur plusieurs découpages."
+    ],
+    "concepts": [
+      {
+        "title": "Pourquoi prétraiter",
+        "body": "Un modèle ne sait pas lire du texte brut : il faut découper, normaliser, puis transformer chaque texte en vecteur de nombres."
+      },
+      {
+        "title": "Tokenisation",
+        "body": "Le texte est séparé en unités (mots, ponctuation), souvent avec une regex (RegexpTokenizer), et passé en minuscules : ce sont les éléments de tout le reste du traitement."
+      },
+      {
+        "title": "Mots vides",
+        "body": "Les mots très fréquents et peu discriminants (« le », « la », « de ») sont retirés : le vocabulaire restant porte l’information utile."
+      },
+      {
+        "title": "Racine contre lemme",
+        "body": "PorterStemmer (NLTK) coupe les mots à une racine approchée (rapide, « studi ») ; spaCy ramène à la forme correcte token.lemma_ (grammaticalement juste, « study ») mais plus lente."
+      },
+      {
+        "title": "Entités nommées",
+        "body": "doc.ents donne les personnes, lieux et organisations (ent.label_) : le « qui, où, quand ». L’extraction est imparfaite, il faut ensuite chercher les ambiguïtés (labels différents pour un même mot)."
+      },
+      {
+        "title": "TF-IDF",
+        "body": "Cette pondération valorise les termes fréquents dans un document mais rares dans le corpus. Le vocabulaire est appris sur le seul jeu d’apprentissage (fit sur le train, transform sur le test)."
+      },
+      {
+        "title": "Mesurer honnêtement",
+        "body": "Le même modèle (par exemple LogisticRegression sur TF-IDF) est comparé entre versions du texte, et la moyenne est prise sur plusieurs découpages train/test : avec peu de données, le hasard peut masquer ou exagérer les effets."
+      }
+    ],
+    "example": "2 400 résumés de films à classer en horreur ou comédie : chaque version du texte (brut, sans mots vides, racines, lemmes) passe par TfidfVectorizer puis LogisticRegression. Les mots vides apportent souvent un gain net sur la précision, tandis que racines et lemmes surtout réduisent la taille du modèle ; sans comparaison moyenne sur plusieurs découpages, on risque de conclure sur du bruit.",
+    "exercises": [
+      "Suivre un même texte à travers tokenisation, mots vides et lemmatisation, et noter ce qui disparaît.",
+      "Comparer la même phrase stemmée (PorterStemmer) et lemmatisée (spaCy) et expliquer la différence.",
+      "Extraire les entités d’un résumé et repérer une extraction erronée ou ambiguë.",
+      "Comparer accuracy moyenne et taille du vocabulaire entre les versions du prétraitement, sur plusieurs découpages."
+    ],
     "resources": [
-      {"label": "Notebook source", "path": "cours/tp7-texte/tp7_texte_nlp.ipynb", "kind": "download"},
-      {"label": "Jeu de données CSV", "path": "cours/tp7-texte/textes_films_horreur_comedie.csv", "kind": "download"}
+      {
+        "label": "Notebook source",
+        "path": "cours/tp7-texte/tp7_texte_nlp.ipynb",
+        "kind": "download"
+      },
+      {
+        "label": "Jeu de données CSV",
+        "path": "cours/tp7-texte/textes_films_horreur_comedie.csv",
+        "kind": "download"
+      }
     ],
     "quizId": "nlp"
   },
@@ -162,14 +519,29 @@
     "theme": "Deep Learning",
     "title": "TP · Optimiser votre réseau",
     "description": "Compte rendu de 1 à 2 pages avec tableau de synthèse et interprétation.",
-    "tags": ["Keras", "optimisation", "compte rendu"],
-    "audience": ["groupe"],
+    "tags": [
+      "Keras",
+      "optimisation",
+      "compte rendu"
+    ],
+    "audience": [
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "draft",
-    "objectives": ["Comparer des variantes de modèle à partir d’un protocole commun."],
-    "concepts": [{"title": "À compléter", "body": "Ajouter les notions exactes et les consignes à partir de l’énoncé du TP avant publication."}],
+    "objectives": [
+      "Comparer des variantes de modèle à partir d’un protocole commun."
+    ],
+    "concepts": [
+      {
+        "title": "À compléter",
+        "body": "Ajouter les notions exactes et les consignes à partir de l’énoncé du TP avant publication."
+      }
+    ],
     "example": "Exemple à compléter après vérification de l’énoncé source.",
-    "exercises": ["Importer l’énoncé validé et détailler les étapes attendues."],
+    "exercises": [
+      "Importer l’énoncé validé et détailler les étapes attendues."
+    ],
     "resources": [],
     "quizId": null
   },
@@ -179,21 +551,70 @@
     "theme": "Deep Learning",
     "title": "Défi d’adaptation · Moons",
     "description": "Comparer un réseau de neurones et une régression logistique, en tenant compte de l’incertitude.",
-    "tags": ["défi", "make_moons", "évaluation"],
-    "audience": ["individuel", "groupe"],
+    "tags": [
+      "défi",
+      "make_moons",
+      "évaluation"
+    ],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "review",
-    "objectives": ["Comparer deux approches de classification sur un jeu synthétique.", "Éviter la fuite d’information lors du prétraitement.", "Interpréter l’incertitude d’un score d’accuracy."],
-    "concepts": [
-      {"title": "Séparation des données", "body": "Le jeu de test mesure la généralisation ; il ne sert pas à ajuster le prétraitement ni à choisir les hyperparamètres."},
-      {"title": "Standardisation", "body": "Le scaler est ajusté sur les données d’entraînement puis appliqué au test avec les mêmes paramètres."},
-      {"title": "Marge d’incertitude", "body": "Sur un échantillon fini, une différence d’accuracy peut être compatible avec la variabilité d’échantillonnage."}
+    "objectives": [
+      "Construire un réseau à une couche cachée ReLU capable d’apprendre une frontière courbe sur make_moons.",
+      "Comparer honnêtement au modèle de référence (régression logistique, frontière linéaire) avec accuracy et F1 macro.",
+      "Décider si un gain est démontrable : marge de bruit sur un petit test et répétition sur plusieurs graines."
     ],
-    "example": "La marge approchée 1,96 × √(p(1−p)/n) donne un ordre de grandeur de l’incertitude d’une proportion p mesurée sur n exemples.",
-    "exercises": ["Vérifier le placement du scaler dans le pipeline d’évaluation.", "Comparer accuracy et F1 macro.", "Justifier si l’écart observé entre modèles dépasse la marge d’incertitude utilisée dans le défi."],
+    "concepts": [
+      {
+        "title": "Séparation des données",
+        "body": "Le jeu de test mesure la généralisation ; il ne sert pas à ajuster le prétraitement ni à choisir les hyperparamètres."
+      },
+      {
+        "title": "Standardisation",
+        "body": "Le scaler est ajusté sur les données d’entraînement puis appliqué au test avec les mêmes paramètres, pour éviter toute fuite d’information."
+      },
+      {
+        "title": "La frontière linéaire plafonne",
+        "body": "make_moons n’est pas linéairement séparable : la régression logistique, contrainte à une droite, plafonne autour de 85–87 % d’accuracy. C’est la référence du défi."
+      },
+      {
+        "title": "Une frontière courbe",
+        "body": "Un réseau à une couche cachée d’activations ReLU apprend une frontière courbe : c’est ce que la forme des données exige."
+      },
+      {
+        "title": "Deux réglages face à face",
+        "body": "A : petit réseau sans dropout. B : réseau plus large avec dropout. Sur un petit jeu bruité, le dropout régularise trop et ralentit la convergence : il faut beaucoup plus de points pour trancher."
+      },
+      {
+        "title": "Marge d’incertitude",
+        "body": "Sur un échantillon fini, la marge 1,96 × √(p(1−p)/n) encadre l’accuracy (par exemple ±6 points pour p ≈ 0,85 et n = 150). Un écart plus petit peut venir du hasard."
+      },
+      {
+        "title": "Le compte rendu honnête",
+        "body": "Le réseau est meilleur en moyenne, mais si l’écart observé reste dans la marge, on ne peut pas le garantir : c’est la réponse à donner au client."
+      }
+    ],
+    "example": "Évaluer les deux modèles sur 3 graines : le réseau dépasse la régression logistique en moyenne, mais l’écart observé (par exemple +5 points) doit être comparé à la marge de bruit 1,96 × √(p(1−p)/n) sur 150 points de test. S’il reste dans cette marge, la conclusion est prudente : gain moyen réel sur le papier, non garanti sur cette taille d’échantillon. Le fichier source est l’énoncé PDF, le notebook fait le compte rendu.",
+    "exercises": [
+      "Calculer la marge de bruit exacte pour la taille du test utilisée dans le défi.",
+      "Comparer accuracy et F1 macro des deux approches, avec moyenne et écart-type sur 3 graines.",
+      "Confronter l’écart observé à la marge : gain démontrable ou non ?",
+      "Rédiger en trois phrases la réponse au client, gain garanti ou non."
+    ],
     "resources": [
-      {"label": "Notebook du défi", "path": "cours/defi-moons/defi_moons_karim.ipynb", "kind": "download"},
-      {"label": "Énoncé PDF", "path": "cours/defi-moons/enonce-defi-adaptation.pdf", "kind": "read"}
+      {
+        "label": "Notebook du défi",
+        "path": "cours/defi-moons/defi_moons_karim.ipynb",
+        "kind": "download"
+      },
+      {
+        "label": "Énoncé PDF",
+        "path": "cours/defi-moons/enonce-defi-adaptation.pdf",
+        "kind": "read"
+      }
     ],
     "quizId": "eval"
   },
@@ -203,14 +624,29 @@
     "theme": "Data Engineering",
     "title": "TradeCorp Data Platform · Jalon 3",
     "description": "Brief de groupe consacré à l’orchestration des pipelines de données.",
-    "tags": ["Airflow", "orchestration", "pipeline"],
-    "audience": ["groupe"],
+    "tags": [
+      "Airflow",
+      "orchestration",
+      "pipeline"
+    ],
+    "audience": [
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "draft",
-    "objectives": ["À préciser à partir du brief source approuvé."],
-    "concepts": [{"title": "Contenu à préparer", "body": "Le brief source et ses critères d’évaluation sont à ajouter et à relire avant publication."}],
+    "objectives": [
+      "À préciser à partir du brief source approuvé."
+    ],
+    "concepts": [
+      {
+        "title": "Contenu à préparer",
+        "body": "Le brief source et ses critères d’évaluation sont à ajouter et à relire avant publication."
+      }
+    ],
     "example": "À compléter après validation du brief.",
-    "exercises": ["Importer les consignes, livrables et critères d’évaluation du jalon."],
+    "exercises": [
+      "Importer les consignes, livrables et critères d’évaluation du jalon."
+    ],
     "resources": [],
     "quizId": null
   },
@@ -220,14 +656,29 @@
     "theme": "Data Engineering",
     "title": "StreamVault · Rapport technique Brief 2",
     "description": "Rapport de synthèse autour des coûts, de la sécurité et de l’architecture.",
-    "tags": ["architecture", "sécurité", "coûts"],
-    "audience": ["groupe"],
+    "tags": [
+      "architecture",
+      "sécurité",
+      "coûts"
+    ],
+    "audience": [
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "draft",
-    "objectives": ["À préciser à partir du brief source approuvé."],
-    "concepts": [{"title": "Contenu à préparer", "body": "Les exigences et recommandations doivent être extraites du brief, vérifiées et relues avant publication."}],
+    "objectives": [
+      "À préciser à partir du brief source approuvé."
+    ],
+    "concepts": [
+      {
+        "title": "Contenu à préparer",
+        "body": "Les exigences et recommandations doivent être extraites du brief, vérifiées et relues avant publication."
+      }
+    ],
     "example": "À compléter après validation du brief.",
-    "exercises": ["Ajouter les contraintes, livrables attendus et ressources associées."],
+    "exercises": [
+      "Ajouter les contraintes, livrables attendus et ressources associées."
+    ],
     "resources": [],
     "quizId": null
   },
@@ -237,14 +688,29 @@
     "theme": "Gestion de projet",
     "title": "StreamVault · Appel d’offres",
     "description": "Dossier de réponse en quatorze parties, préparé en équipe.",
-    "tags": ["appel d’offres", "équipe", "gestion de projet"],
-    "audience": ["groupe"],
+    "tags": [
+      "appel d’offres",
+      "équipe",
+      "gestion de projet"
+    ],
+    "audience": [
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "draft",
-    "objectives": ["À préciser à partir de l’énoncé et de la grille d’évaluation approuvés."],
-    "concepts": [{"title": "Contenu à préparer", "body": "Ajouter les critères de réponse et les éléments de contexte à partir de la source éditoriale."}],
+    "objectives": [
+      "À préciser à partir de l’énoncé et de la grille d’évaluation approuvés."
+    ],
+    "concepts": [
+      {
+        "title": "Contenu à préparer",
+        "body": "Ajouter les critères de réponse et les éléments de contexte à partir de la source éditoriale."
+      }
+    ],
     "example": "À compléter après validation de l’énoncé.",
-    "exercises": ["Décrire les quatorze parties attendues et les modalités de travail d’équipe."],
+    "exercises": [
+      "Décrire les quatorze parties attendues et les modalités de travail d’équipe."
+    ],
     "resources": [],
     "quizId": null
   },
@@ -254,14 +720,30 @@
     "theme": "Gestion de projet",
     "title": "Veille · Compétences stratégiques",
     "description": "Explorer pilotage, stratégie, gouvernance et relation client.",
-    "tags": ["veille", "gouvernance", "stratégie"],
-    "audience": ["individuel", "groupe"],
+    "tags": [
+      "veille",
+      "gouvernance",
+      "stratégie"
+    ],
+    "audience": [
+      "individuel",
+      "groupe"
+    ],
     "duration": "À définir",
     "status": "draft",
-    "objectives": ["À préciser avec l’énoncé de veille et les attentes de restitution."],
-    "concepts": [{"title": "Contenu à préparer", "body": "Définir le périmètre de veille, les sources acceptées et les critères de synthèse avant publication."}],
+    "objectives": [
+      "À préciser avec l’énoncé de veille et les attentes de restitution."
+    ],
+    "concepts": [
+      {
+        "title": "Contenu à préparer",
+        "body": "Définir le périmètre de veille, les sources acceptées et les critères de synthèse avant publication."
+      }
+    ],
     "example": "À compléter après validation de la consigne.",
-    "exercises": ["Ajouter les livrables, critères de qualité et ressources de référence."],
+    "exercises": [
+      "Ajouter les livrables, critères de qualité et ressources de référence."
+    ],
     "resources": [],
     "quizId": null
   }
