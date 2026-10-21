@@ -103,6 +103,11 @@ try {
       !notebookHTML.includes('href="./tp1_regression.ipynb"')) {
     fail("La page du notebook TP1 doit utiliser des chemins relatifs valides.");
   }
+  if (!notebookHTML.includes('id="mode"') ||
+      !notebookHTML.includes('carnet-data-v1') ||
+      !notebookHTML.includes('data-jp-theme-light')) {
+    fail("La page du notebook TP1 doit proposer le bouton de mode sombre synchronisé avec le site.");
+  }
   if (/<script\b[^>]*\bsrc=["']https?:/i.test(notebookHTML) ||
       /\bimport\s*\(\s*["']https?:/i.test(notebookHTML) ||
       /<link\b[^>]*\bhref=["']https?:/i.test(notebookHTML)) {
