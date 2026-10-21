@@ -98,9 +98,9 @@ for (const file of ["style.css", "app.js", "content/courses.json", "content/quiz
   catch { fail(`Fichier requis absent : ${file}.`); }
 }
 try {
-  const notebookHTML = await readFile(path.join(root, "cours/tp1_regression.html"), "utf8");
-  if (!notebookHTML.includes('href="../notebook.css"') ||
-      !notebookHTML.includes('href="../ENONCES/tp1_regression.ipynb"')) {
+  const notebookHTML = await readFile(path.join(root, "cours/tp1-regression/tp1_regression.html"), "utf8");
+  if (!notebookHTML.includes('href="../../notebook.css"') ||
+      !notebookHTML.includes('href="./tp1_regression.ipynb"')) {
     fail("La page du notebook TP1 doit utiliser des chemins relatifs valides.");
   }
   if (/<script\b[^>]*\bsrc=["']https?:/i.test(notebookHTML) ||

@@ -27,7 +27,23 @@ Il contrôle les champs obligatoires, les identifiants, les réponses et explica
 5. Garde `status: "draft"` tant que la fiche est incomplète ; utilise `"review"` pour une proposition complète qui attend une vérification humaine ; ne passe à `"published"` qu’après relecture et approbation éditoriale. Un cours publié doit avoir objectifs, notions, exemple, exercices et quiz valides. Les états autres que publié restent signalés dans l’interface.
 6. Soumets les modifications à la revue habituelle du dépôt, puis publie le site statique depuis le mécanisme GitHub Pages déjà configuré pour ce dépôt.
 
-Les chemins de ressources sont relatifs à la racine du dépôt (par exemple `ENONCES/tp1_regression.ipynb`), sans `/` initial ni `..`. Les liens sont ainsi compatibles avec la publication à la racine d’un dépôt de projet GitHub Pages.
+Les chemins de ressources sont relatifs à la racine du dépôt (par exemple `cours/tp1-regression/tp1_regression.ipynb`), sans `/` initial ni `..`. Les liens sont ainsi compatibles avec la publication à la racine d’un dépôt de projet GitHub Pages.
+
+## Arborescence
+
+```text
+LearnData/
+├── index.html, style.css, app.js, quiz.js, notebook.css   (app, sans build)
+├── content/courses.json, content/quizzes.json             (données des fiches)
+├── cours/<cours-id>/                                      (1 dossier par cours)
+│   ├── mon_tp.ipynb                                          notebook source
+│   ├── mon_tp.html                                           généré par build_notebooks.py
+│   └── *.csv, *.keras …                                      autres ressources
+├── scripts/validate-content.mjs                           (vérification avant publication)
+└── build_notebooks.py, requirements.txt                   (génération des pages HTML)
+```
+
+`<cours-id>` reprend exactement le champ `id` de la fiche dans `content/courses.json`. Un notebook ne s’ouvre qu’après conversion : `pip install nbconvert nbformat` puis `python build_notebooks.py`.
 
 ## Génération de contenu assistée par IA (hors du site)
 

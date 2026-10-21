@@ -18,8 +18,8 @@
     "example": "Pour prédire une consommation à partir de plusieurs mesures, la couche de sortie est généralement un neurone à activation linéaire : la prédiction n’est pas bornée entre 0 et 1.",
     "exercises": ["Repérer la variable cible et les variables d’entrée du jeu de données.", "Comparer la perte d’entraînement et la perte de validation après plusieurs époques.", "Expliquer dans l’unité de la cible ce que représente une erreur de prédiction."],
     "resources": [
-      {"label": "Ouvrir le notebook HTML", "path": "cours/tp1_regression.html", "kind": "read"},
-      {"label": "Télécharger le notebook", "path": "ENONCES/tp1_regression.ipynb", "kind": "download"}
+      {"label": "Ouvrir le notebook HTML", "path": "cours/tp1-regression/tp1_regression.html", "kind": "read"},
+      {"label": "Télécharger le notebook", "path": "cours/tp1-regression/tp1_regression.ipynb", "kind": "download"}
     ],
     "quizId": "reg"
   },
@@ -41,7 +41,7 @@
     ],
     "example": "Une probabilité de 0,82 avec un seuil de 0,5 conduit à prédire la classe positive. Changer le seuil modifie le compromis entre faux positifs et faux négatifs.",
     "exercises": ["Identifier la classe positive et la sortie du modèle.", "Calculer précision et rappel à partir d’une matrice de confusion.", "Comparer accuracy et rappel lorsque les classes sont déséquilibrées."],
-    "resources": [{"label": "Notebook source", "path": "ENONCES/tp2_classification_binaire.ipynb", "kind": "download"}],
+    "resources": [{"label": "Notebook source", "path": "cours/tp2-binaire/tp2_classification_binaire.ipynb", "kind": "download"}],
     "quizId": "clf"
   },
   {
@@ -62,7 +62,7 @@
     ],
     "example": "Pour dix classes, une couche dense de dix neurones avec softmax produit une probabilité pour chacune des dix catégories.",
     "exercises": ["Vérifier la forme de la couche de sortie par rapport au nombre de classes.", "Comparer étiquettes entières et encodage one-hot.", "Repérer la paire de classes la plus fréquemment confondue."],
-    "resources": [{"label": "Notebook source", "path": "ENONCES/tp3_multiclasses.ipynb", "kind": "download"}],
+    "resources": [{"label": "Notebook source", "path": "cours/tp3-multiclasses/tp3_multiclasses.ipynb", "kind": "download"}],
     "quizId": "clf"
   },
   {
@@ -83,7 +83,7 @@
     ],
     "example": "Une convolution 3 × 3 apprend un petit détecteur local. Les mêmes poids étant réutilisés à chaque position, le nombre de paramètres reste inférieur à celui d’une connexion dense sur chaque pixel.",
     "exercises": ["Suivre la forme d’un tenseur après convolution et pooling.", "Expliquer l’effet du nombre de filtres sur la profondeur de sortie.", "Comparer le nombre de paramètres d’une couche dense et d’une convolution."],
-    "resources": [{"label": "Notebook source", "path": "ENONCES/tp4_cnn.ipynb", "kind": "download"}],
+    "resources": [{"label": "Notebook source", "path": "cours/tp4-cnn/tp4_cnn.ipynb", "kind": "download"}],
     "quizId": "cnn"
   },
   {
@@ -104,7 +104,7 @@
     ],
     "example": "Si la perte d’entraînement baisse encore alors que la perte de validation remonte, l’écart est un indice de surapprentissage à examiner.",
     "exercises": ["Tracer les pertes d’entraînement et de validation.", "Comparer un modèle avec et sans Dropout.", "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés."],
-    "resources": [{"label": "Notebook source", "path": "ENONCES/tp5_regularisation.ipynb", "kind": "download"}],
+    "resources": [{"label": "Notebook source", "path": "cours/tp5-regularisation/tp5_regularisation.ipynb", "kind": "download"}],
     "quizId": "reg2"
   },
   {
@@ -126,9 +126,9 @@
     "example": "Une recherche peut tester plusieurs taux d’apprentissage et tailles de couches, puis sélectionner la configuration qui minimise la perte de validation.",
     "exercises": ["Lister les hyperparamètres réellement explorés dans le notebook.", "Comparer taille et précision du modèle avant et après quantification.", "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai."],
     "resources": [
-      {"label": "Notebook source", "path": "ENONCES/tp6_hyperparametres_compression.ipynb", "kind": "download"},
-      {"label": "Modèle Keras", "path": "ENONCES/modele_final.keras", "kind": "download"},
-      {"label": "Modèle TensorFlow Lite", "path": "ENONCES/modele_quantifie.tflite", "kind": "download"}
+      {"label": "Notebook source", "path": "cours/tp6-hyperparametres/tp6_hyperparametres_compression.ipynb", "kind": "download"},
+      {"label": "Modèle Keras", "path": "cours/tp6-hyperparametres/modele_final.keras", "kind": "download"},
+      {"label": "Modèle TensorFlow Lite", "path": "cours/tp6-hyperparametres/modele_quantifie.tflite", "kind": "download"}
     ],
     "quizId": "reg2"
   },
@@ -151,8 +151,8 @@
     "example": "Un terme présent dans presque tous les avis distingue peu un document ; un terme fréquent dans un avis mais rare dans les autres peut être plus informatif.",
     "exercises": ["Suivre un texte à travers tokenisation et lemmatisation.", "Comparer les termes les plus pondérés dans deux documents.", "Vérifier que les données de test ne sont pas utilisées pour ajuster le vectoriseur."],
     "resources": [
-      {"label": "Notebook source", "path": "ENONCES/tp7_texte_nlp.ipynb", "kind": "download"},
-      {"label": "Jeu de données CSV", "path": "ENONCES/textes_films_horreur_comedie.csv", "kind": "download"}
+      {"label": "Notebook source", "path": "cours/tp7-texte/tp7_texte_nlp.ipynb", "kind": "download"},
+      {"label": "Jeu de données CSV", "path": "cours/tp7-texte/textes_films_horreur_comedie.csv", "kind": "download"}
     ],
     "quizId": "nlp"
   },
@@ -192,8 +192,8 @@
     "example": "La marge approchée 1,96 × √(p(1−p)/n) donne un ordre de grandeur de l’incertitude d’une proportion p mesurée sur n exemples.",
     "exercises": ["Vérifier le placement du scaler dans le pipeline d’évaluation.", "Comparer accuracy et F1 macro.", "Justifier si l’écart observé entre modèles dépasse la marge d’incertitude utilisée dans le défi."],
     "resources": [
-      {"label": "Notebook du défi", "path": "defi_moons_karim.ipynb", "kind": "download"},
-      {"label": "Énoncé PDF", "path": "enonce-defi-adaptation.pdf", "kind": "read"}
+      {"label": "Notebook du défi", "path": "cours/defi-moons/defi_moons_karim.ipynb", "kind": "download"},
+      {"label": "Énoncé PDF", "path": "cours/defi-moons/enonce-defi-adaptation.pdf", "kind": "read"}
     ],
     "quizId": "eval"
   },
