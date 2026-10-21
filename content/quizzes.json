@@ -1,0 +1,63 @@
+[
+  {
+    "id": "reg",
+    "title": "Régression",
+    "from": "TP1",
+    "questions": [
+      {"question": "Quelle fonction de perte utilise-t-on pour prédire une valeur continue ?", "options": ["Entropie croisée binaire", "Erreur quadratique moyenne (MSE)", "Accuracy", "Softmax"], "answer": 1, "explanation": "La MSE mesure l’écart moyen au carré entre prédiction et valeur réelle. L’accuracy et l’entropie croisée servent à la classification."},
+      {"question": "Quelle activation met-on généralement sur la couche de sortie pour une régression ?", "options": ["Sigmoïde", "Softmax", "Aucune (linéaire)", "ReLU"], "answer": 2, "explanation": "Une sortie linéaire n’impose pas de borne artificielle à la valeur prédite."},
+      {"question": "Pourquoi mettre les variables à l’échelle avant l’entraînement ?", "options": ["Pour qu’aucune ne domine uniquement par son ordre de grandeur", "Pour supprimer les valeurs manquantes", "Pour augmenter le nombre de lignes", "Pour éviter un jeu de test"], "answer": 0, "explanation": "Des échelles très différentes peuvent rendre l’optimisation plus difficile. Les paramètres du prétraitement sont ajustés sur le jeu d’entraînement."}
+    ]
+  },
+  {
+    "id": "clf",
+    "title": "Classification",
+    "from": "TP2 et TP3",
+    "questions": [
+      {"question": "Pour une classification binaire, quelle sortie et quelle perte choisir ?", "options": ["1 neurone softmax et MSE", "2 neurones ReLU et MSE", "1 neurone sigmoïde et binary_crossentropy", "1 neurone linéaire et accuracy"], "answer": 2, "explanation": "La sigmoïde donne une valeur entre 0 et 1, et l’entropie croisée binaire compare cette prédiction à la classe réelle."},
+      {"question": "Pour 10 classes étiquetées par des entiers de 0 à 9, que choisir ?", "options": ["10 neurones softmax et sparse_categorical_crossentropy", "10 neurones sigmoïde et MSE", "1 neurone softmax et binary_crossentropy", "10 neurones linéaires et MSE"], "answer": 0, "explanation": "Softmax produit une probabilité par classe ; la version sparse de la perte accepte des étiquettes entières."},
+      {"question": "Que montre une matrice de confusion ?", "options": ["L’évolution de la perte par époque", "Les classes que le modèle confond entre elles", "Le nombre de paramètres", "La vitesse d’entraînement"], "answer": 1, "explanation": "Elle croise classe réelle et classe prédite, et révèle les erreurs par classe."}
+    ]
+  },
+  {
+    "id": "cnn",
+    "title": "Réseaux convolutifs",
+    "from": "TP4",
+    "questions": [
+      {"question": "Que fait une couche de convolution ?", "options": ["Elle mélange tous les pixels en un vecteur", "Elle applique des filtres pour détecter des motifs locaux", "Elle supprime des neurones au hasard", "Elle normalise les étiquettes"], "answer": 1, "explanation": "Un filtre parcourt l’image pour repérer des motifs locaux, avec les mêmes poids à chaque position."},
+      {"question": "À quoi sert le MaxPooling ?", "options": ["Réduire les dimensions en gardant une valeur représentative de chaque zone", "Augmenter le nombre de filtres", "Calculer la perte", "Convertir l’image en niveaux de gris"], "answer": 0, "explanation": "Le pooling réduit la résolution spatiale et donc le calcul, tout en gardant une représentation des activations."},
+      {"question": "Pourquoi un CNN convient-il aux images ?", "options": ["Il n’a pas besoin de données", "Il exploite la structure spatiale avec des poids partagés", "Il ne se trompe jamais", "Il n’utilise pas d’activation"], "answer": 1, "explanation": "Les filtres partagés préservent la structure locale et limitent le nombre de paramètres par rapport à un réseau entièrement dense."}
+    ]
+  },
+  {
+    "id": "reg2",
+    "title": "Régularisation et réglages",
+    "from": "TP5 et TP6",
+    "questions": [
+      {"question": "Que fait Dropout pendant l’entraînement ?", "options": ["Il supprime les lignes mal classées", "Il désactive aléatoirement une partie des activations", "Il double le taux d’apprentissage", "Il fige les poids de la première couche"], "answer": 1, "explanation": "Le réseau ne peut pas dépendre constamment des mêmes unités, ce qui peut limiter le surapprentissage. Dropout est inactif à l’inférence."},
+      {"question": "Que fait EarlyStopping avec restore_best_weights=True ?", "options": ["Il arrête si la validation cesse de s’améliorer et restaure les meilleurs poids", "Il arrête après la première époque", "Il choisit seul le meilleur taux d’apprentissage", "Il augmente le nombre d’époques"], "answer": 0, "explanation": "L’arrêt anticipé limite les entraînements inutilement longs et restaure les poids correspondant à la meilleure valeur de validation."},
+      {"question": "À quoi sert Keras Tuner ?", "options": ["À compresser un modèle entraîné", "À explorer des combinaisons d’hyperparamètres", "À convertir un notebook en HTML", "À créer des étiquettes"], "answer": 1, "explanation": "L’outil explore des configurations définies, par exemple tailles de couches ou taux d’apprentissage, en fonction d’une métrique."}
+    ]
+  },
+  {
+    "id": "nlp",
+    "title": "Texte et NLP",
+    "from": "TP7",
+    "questions": [
+      {"question": "Qu’est-ce que la tokenisation ?", "options": ["Chiffrer un texte", "Découper un texte en unités comme des mots ou signes", "Traduire un texte", "Compter les lignes d’un fichier"], "answer": 1, "explanation": "La tokenisation sépare le texte en unités qui peuvent ensuite être analysées ou représentées."},
+      {"question": "Que fait la lemmatisation ?", "options": ["Elle supprime la ponctuation", "Elle ramène un mot à sa forme de base", "Elle compte les occurrences", "Elle détecte la langue"], "answer": 1, "explanation": "Elle rapproche les formes fléchies d’un mot de leur lemme, par exemple « mangeaient » et « manger »."},
+      {"question": "Que pondère TF-IDF ?", "options": ["Les mots fréquents dans un document mais rares dans le corpus", "Les mots les plus longs", "Uniquement les mots vides", "Les phrases selon leur position"], "answer": 0, "explanation": "Un terme courant dans tous les documents apporte peu d’information ; TF-IDF met davantage en avant les termes caractéristiques."}
+    ]
+  },
+  {
+    "id": "eval",
+    "title": "Évaluer et comparer",
+    "from": "Défi Moons",
+    "questions": [
+      {"question": "Pourquoi ajuster StandardScaler sur l’apprentissage seulement ?", "options": ["Pour aller plus vite", "Pour éviter une fuite d’information du test vers l’entraînement", "Parce que le test n’a pas de variables", "Pour équilibrer les classes"], "answer": 1, "explanation": "Si le scaler voit le test, ses statistiques intègrent une information qui doit rester inconnue pendant l’apprentissage."},
+      {"question": "Que garantit l’argument stratify de train_test_split ?", "options": ["Que le test est plus grand", "Que les proportions de classes sont conservées dans chaque partie", "Que les données sont triées", "Que le modèle converge"], "answer": 1, "explanation": "La stratification aide à préserver une répartition comparable des classes dans les sous-ensembles."},
+      {"question": "Le F1 macro, c’est…", "options": ["Le F1 de la classe majoritaire", "La moyenne des F1 de chaque classe sans pondération", "Le F1 du test moins celui du train", "L’accuracy multipliée par 100"], "answer": 1, "explanation": "Chaque classe contribue de manière égale à la moyenne, y compris les classes rares."},
+      {"question": "Une différence d’accuracy est inférieure à la marge d’incertitude estimée. Que conclure ?", "options": ["Le réseau est clairement meilleur", "La différence observée ne suffit pas à démontrer un écart réel", "La référence est clairement meilleure", "Il faut supprimer le jeu de test"], "answer": 1, "explanation": "Une performance mesurée sur un échantillon est variable. Un écart inférieur à la marge choisie reste compatible avec cette variabilité."}
+    ]
+  }
+]

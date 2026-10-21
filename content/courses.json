@@ -1,0 +1,268 @@
+[
+  {
+    "id": "tp1-regression",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP1 · Régression",
+    "description": "Construire un premier réseau de neurones pour prédire une valeur continue.",
+    "tags": ["Keras", "régression", "MSE"],
+    "audience": ["individuel", "groupe"],
+    "duration": "45 min",
+    "status": "review",
+    "objectives": ["Préparer des variables numériques pour l’apprentissage.", "Construire et entraîner un modèle de régression avec Keras.", "Interpréter une erreur quadratique sur des données de test."],
+    "concepts": [
+      {"title": "Prédire une quantité", "body": "En régression, la cible est numérique et continue. Le modèle produit une valeur, par exemple un prix ou une mesure."},
+      {"title": "Fonction de perte", "body": "La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, après élévation au carré. Une erreur importante est ainsi davantage pénalisée."},
+      {"title": "Échelle des variables", "body": "La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise."}
+    ],
+    "example": "Pour prédire une consommation à partir de plusieurs mesures, la couche de sortie est généralement un neurone à activation linéaire : la prédiction n’est pas bornée entre 0 et 1.",
+    "exercises": ["Repérer la variable cible et les variables d’entrée du jeu de données.", "Comparer la perte d’entraînement et la perte de validation après plusieurs époques.", "Expliquer dans l’unité de la cible ce que représente une erreur de prédiction."],
+    "resources": [
+      {"label": "Ouvrir le notebook HTML", "path": "cours/tp1_regression.html", "kind": "read"},
+      {"label": "Télécharger le notebook", "path": "ENONCES/tp1_regression.ipynb", "kind": "download"}
+    ],
+    "quizId": "reg"
+  },
+  {
+    "id": "tp2-binaire",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP2 · Classification binaire",
+    "description": "Prédire l’une de deux classes et lire les métriques d’évaluation.",
+    "tags": ["Keras", "classification", "sigmoïde"],
+    "audience": ["individuel", "groupe"],
+    "duration": "45 min",
+    "status": "review",
+    "objectives": ["Distinguer une tâche de classification d’une régression.", "Relier sortie sigmoïde, seuil et classe prédite.", "Lire une matrice de confusion."],
+    "concepts": [
+      {"title": "Probabilité de classe", "body": "Une sortie sigmoïde fournit une valeur entre 0 et 1. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe."},
+      {"title": "Entropie croisée binaire", "body": "binary_crossentropy pénalise les probabilités attribuées aux classes réelles. Elle est adaptée à une sortie binaire."},
+      {"title": "Matrice de confusion", "body": "Elle compare classe réelle et classe prédite pour distinguer vrais positifs, faux positifs, vrais négatifs et faux négatifs."}
+    ],
+    "example": "Une probabilité de 0,82 avec un seuil de 0,5 conduit à prédire la classe positive. Changer le seuil modifie le compromis entre faux positifs et faux négatifs.",
+    "exercises": ["Identifier la classe positive et la sortie du modèle.", "Calculer précision et rappel à partir d’une matrice de confusion.", "Comparer accuracy et rappel lorsque les classes sont déséquilibrées."],
+    "resources": [{"label": "Notebook source", "path": "ENONCES/tp2_classification_binaire.ipynb", "kind": "download"}],
+    "quizId": "clf"
+  },
+  {
+    "id": "tp3-multiclasses",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP3 · Classification multiclasse",
+    "description": "Étendre la classification à plusieurs catégories avec une sortie softmax.",
+    "tags": ["Keras", "softmax", "multiclasse"],
+    "audience": ["individuel", "groupe"],
+    "duration": "45 min",
+    "status": "review",
+    "objectives": ["Configurer une sortie à plusieurs classes.", "Choisir une perte selon le format des étiquettes.", "Analyser les confusions entre catégories."],
+    "concepts": [
+      {"title": "Softmax", "body": "La fonction softmax transforme les scores de sortie en probabilités dont la somme vaut 1."},
+      {"title": "Étiquettes entières", "body": "Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot."},
+      {"title": "Évaluation par classe", "body": "L’accuracy globale ne révèle pas toutes les erreurs ; une matrice de confusion permet de voir quelles catégories se ressemblent pour le modèle."}
+    ],
+    "example": "Pour dix classes, une couche dense de dix neurones avec softmax produit une probabilité pour chacune des dix catégories.",
+    "exercises": ["Vérifier la forme de la couche de sortie par rapport au nombre de classes.", "Comparer étiquettes entières et encodage one-hot.", "Repérer la paire de classes la plus fréquemment confondue."],
+    "resources": [{"label": "Notebook source", "path": "ENONCES/tp3_multiclasses.ipynb", "kind": "download"}],
+    "quizId": "clf"
+  },
+  {
+    "id": "tp4-cnn",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP4 · Réseaux convolutifs",
+    "description": "Découvrir comment les filtres convolutifs apprennent des motifs dans les images.",
+    "tags": ["CNN", "images", "convolution"],
+    "audience": ["individuel", "groupe"],
+    "duration": "50 min",
+    "status": "review",
+    "objectives": ["Décrire le rôle d’un filtre convolutif.", "Comprendre le sous-échantillonnage avec pooling.", "Relier dimensions d’entrée et formes intermédiaires."],
+    "concepts": [
+      {"title": "Convolution", "body": "Un filtre partagé parcourt l’image et répond à des motifs locaux, comme des bords ou des textures."},
+      {"title": "Max pooling", "body": "Le pooling réduit la résolution spatiale en conservant une valeur représentative dans chaque zone."},
+      {"title": "Apprentissage hiérarchique", "body": "Les couches successives combinent des motifs simples en représentations plus complexes."}
+    ],
+    "example": "Une convolution 3 × 3 apprend un petit détecteur local. Les mêmes poids étant réutilisés à chaque position, le nombre de paramètres reste inférieur à celui d’une connexion dense sur chaque pixel.",
+    "exercises": ["Suivre la forme d’un tenseur après convolution et pooling.", "Expliquer l’effet du nombre de filtres sur la profondeur de sortie.", "Comparer le nombre de paramètres d’une couche dense et d’une convolution."],
+    "resources": [{"label": "Notebook source", "path": "ENONCES/tp4_cnn.ipynb", "kind": "download"}],
+    "quizId": "cnn"
+  },
+  {
+    "id": "tp5-regularisation",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP5 · Régularisation",
+    "description": "Repérer le surapprentissage et tester des stratégies pour mieux généraliser.",
+    "tags": ["dropout", "early stopping", "validation"],
+    "audience": ["individuel", "groupe"],
+    "duration": "45 min",
+    "status": "review",
+    "objectives": ["Comparer les performances entraînement et validation.", "Expliquer le rôle de Dropout.", "Configurer l’arrêt anticipé sur une métrique de validation."],
+    "concepts": [
+      {"title": "Surapprentissage", "body": "Un modèle qui s’améliore sur l’entraînement mais se dégrade sur des données non vues mémorise en partie ses exemples."},
+      {"title": "Dropout", "body": "Pendant l’entraînement, Dropout désactive aléatoirement une partie des activations afin de limiter les dépendances excessives."},
+      {"title": "Early stopping", "body": "L’entraînement peut s’arrêter lorsque la métrique de validation cesse de s’améliorer ; les meilleurs poids peuvent être restaurés."}
+    ],
+    "example": "Si la perte d’entraînement baisse encore alors que la perte de validation remonte, l’écart est un indice de surapprentissage à examiner.",
+    "exercises": ["Tracer les pertes d’entraînement et de validation.", "Comparer un modèle avec et sans Dropout.", "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés."],
+    "resources": [{"label": "Notebook source", "path": "ENONCES/tp5_regularisation.ipynb", "kind": "download"}],
+    "quizId": "reg2"
+  },
+  {
+    "id": "tp6-hyperparametres",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP6 · Hyperparamètres et compression",
+    "description": "Explorer des réglages de modèle et découvrir des formats de déploiement compacts.",
+    "tags": ["Keras Tuner", "hyperparamètres", "TensorFlow Lite"],
+    "audience": ["individuel", "groupe"],
+    "duration": "60 min",
+    "status": "review",
+    "objectives": ["Distinguer paramètres appris et hyperparamètres.", "Décrire une recherche d’hyperparamètres.", "Identifier les artefacts d’un export de modèle."],
+    "concepts": [
+      {"title": "Hyperparamètres", "body": "La taille des couches ou le taux d’apprentissage sont fixés avant l’entraînement et peuvent être comparés par une recherche structurée."},
+      {"title": "Validation", "body": "Les essais se comparent sur une métrique de validation ; le jeu de test reste réservé à l’évaluation finale."},
+      {"title": "Compression et export", "body": "La quantification peut réduire la taille d’un modèle et ses besoins de calcul, avec un compromis possible sur la précision."}
+    ],
+    "example": "Une recherche peut tester plusieurs taux d’apprentissage et tailles de couches, puis sélectionner la configuration qui minimise la perte de validation.",
+    "exercises": ["Lister les hyperparamètres réellement explorés dans le notebook.", "Comparer taille et précision du modèle avant et après quantification.", "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai."],
+    "resources": [
+      {"label": "Notebook source", "path": "ENONCES/tp6_hyperparametres_compression.ipynb", "kind": "download"},
+      {"label": "Modèle Keras", "path": "ENONCES/modele_final.keras", "kind": "download"},
+      {"label": "Modèle TensorFlow Lite", "path": "ENONCES/modele_quantifie.tflite", "kind": "download"}
+    ],
+    "quizId": "reg2"
+  },
+  {
+    "id": "tp7-texte",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP7 · Texte et NLP",
+    "description": "Préparer des textes et construire une représentation exploitable pour la classification.",
+    "tags": ["NLP", "spaCy", "TF-IDF"],
+    "audience": ["individuel", "groupe"],
+    "duration": "60 min",
+    "status": "review",
+    "objectives": ["Décrire les étapes d’un prétraitement textuel.", "Distinguer tokenisation et lemmatisation.", "Interpréter une représentation TF-IDF."],
+    "concepts": [
+      {"title": "Tokenisation", "body": "Le texte est séparé en unités comme les mots et la ponctuation, qui deviennent les éléments d’un traitement ultérieur."},
+      {"title": "Lemmatisation", "body": "Des formes fléchies sont rapprochées de leur lemme pour réduire les variantes d’un même mot."},
+      {"title": "TF-IDF", "body": "Cette pondération valorise les termes fréquents dans un document mais relativement rares dans le corpus."}
+    ],
+    "example": "Un terme présent dans presque tous les avis distingue peu un document ; un terme fréquent dans un avis mais rare dans les autres peut être plus informatif.",
+    "exercises": ["Suivre un texte à travers tokenisation et lemmatisation.", "Comparer les termes les plus pondérés dans deux documents.", "Vérifier que les données de test ne sont pas utilisées pour ajuster le vectoriseur."],
+    "resources": [
+      {"label": "Notebook source", "path": "ENONCES/tp7_texte_nlp.ipynb", "kind": "download"},
+      {"label": "Jeu de données CSV", "path": "ENONCES/textes_films_horreur_comedie.csv", "kind": "download"}
+    ],
+    "quizId": "nlp"
+  },
+  {
+    "id": "tp-optimiser",
+    "type": "tp",
+    "theme": "Deep Learning",
+    "title": "TP · Optimiser votre réseau",
+    "description": "Compte rendu de 1 à 2 pages avec tableau de synthèse et interprétation.",
+    "tags": ["Keras", "optimisation", "compte rendu"],
+    "audience": ["groupe"],
+    "duration": "À définir",
+    "status": "draft",
+    "objectives": ["Comparer des variantes de modèle à partir d’un protocole commun."],
+    "concepts": [{"title": "À compléter", "body": "Ajouter les notions exactes et les consignes à partir de l’énoncé du TP avant publication."}],
+    "example": "Exemple à compléter après vérification de l’énoncé source.",
+    "exercises": ["Importer l’énoncé validé et détailler les étapes attendues."],
+    "resources": [],
+    "quizId": null
+  },
+  {
+    "id": "defi-moons",
+    "type": "brief",
+    "theme": "Deep Learning",
+    "title": "Défi d’adaptation · Moons",
+    "description": "Comparer un réseau de neurones et une régression logistique, en tenant compte de l’incertitude.",
+    "tags": ["défi", "make_moons", "évaluation"],
+    "audience": ["individuel", "groupe"],
+    "duration": "À définir",
+    "status": "review",
+    "objectives": ["Comparer deux approches de classification sur un jeu synthétique.", "Éviter la fuite d’information lors du prétraitement.", "Interpréter l’incertitude d’un score d’accuracy."],
+    "concepts": [
+      {"title": "Séparation des données", "body": "Le jeu de test mesure la généralisation ; il ne sert pas à ajuster le prétraitement ni à choisir les hyperparamètres."},
+      {"title": "Standardisation", "body": "Le scaler est ajusté sur les données d’entraînement puis appliqué au test avec les mêmes paramètres."},
+      {"title": "Marge d’incertitude", "body": "Sur un échantillon fini, une différence d’accuracy peut être compatible avec la variabilité d’échantillonnage."}
+    ],
+    "example": "La marge approchée 1,96 × √(p(1−p)/n) donne un ordre de grandeur de l’incertitude d’une proportion p mesurée sur n exemples.",
+    "exercises": ["Vérifier le placement du scaler dans le pipeline d’évaluation.", "Comparer accuracy et F1 macro.", "Justifier si l’écart observé entre modèles dépasse la marge d’incertitude utilisée dans le défi."],
+    "resources": [
+      {"label": "Notebook du défi", "path": "defi_moons_karim.ipynb", "kind": "download"},
+      {"label": "Énoncé PDF", "path": "enonce-defi-adaptation.pdf", "kind": "read"}
+    ],
+    "quizId": "eval"
+  },
+  {
+    "id": "brief-tradecorp",
+    "type": "brief",
+    "theme": "Data Engineering",
+    "title": "TradeCorp Data Platform · Jalon 3",
+    "description": "Brief de groupe consacré à l’orchestration des pipelines de données.",
+    "tags": ["Airflow", "orchestration", "pipeline"],
+    "audience": ["groupe"],
+    "duration": "À définir",
+    "status": "draft",
+    "objectives": ["À préciser à partir du brief source approuvé."],
+    "concepts": [{"title": "Contenu à préparer", "body": "Le brief source et ses critères d’évaluation sont à ajouter et à relire avant publication."}],
+    "example": "À compléter après validation du brief.",
+    "exercises": ["Importer les consignes, livrables et critères d’évaluation du jalon."],
+    "resources": [],
+    "quizId": null
+  },
+  {
+    "id": "brief-streamvault-rapport",
+    "type": "brief",
+    "theme": "Data Engineering",
+    "title": "StreamVault · Rapport technique Brief 2",
+    "description": "Rapport de synthèse autour des coûts, de la sécurité et de l’architecture.",
+    "tags": ["architecture", "sécurité", "coûts"],
+    "audience": ["groupe"],
+    "duration": "À définir",
+    "status": "draft",
+    "objectives": ["À préciser à partir du brief source approuvé."],
+    "concepts": [{"title": "Contenu à préparer", "body": "Les exigences et recommandations doivent être extraites du brief, vérifiées et relues avant publication."}],
+    "example": "À compléter après validation du brief.",
+    "exercises": ["Ajouter les contraintes, livrables attendus et ressources associées."],
+    "resources": [],
+    "quizId": null
+  },
+  {
+    "id": "brief-appel-offres",
+    "type": "brief",
+    "theme": "Gestion de projet",
+    "title": "StreamVault · Appel d’offres",
+    "description": "Dossier de réponse en quatorze parties, préparé en équipe.",
+    "tags": ["appel d’offres", "équipe", "gestion de projet"],
+    "audience": ["groupe"],
+    "duration": "À définir",
+    "status": "draft",
+    "objectives": ["À préciser à partir de l’énoncé et de la grille d’évaluation approuvés."],
+    "concepts": [{"title": "Contenu à préparer", "body": "Ajouter les critères de réponse et les éléments de contexte à partir de la source éditoriale."}],
+    "example": "À compléter après validation de l’énoncé.",
+    "exercises": ["Décrire les quatorze parties attendues et les modalités de travail d’équipe."],
+    "resources": [],
+    "quizId": null
+  },
+  {
+    "id": "veille-competences",
+    "type": "brief",
+    "theme": "Gestion de projet",
+    "title": "Veille · Compétences stratégiques",
+    "description": "Explorer pilotage, stratégie, gouvernance et relation client.",
+    "tags": ["veille", "gouvernance", "stratégie"],
+    "audience": ["individuel", "groupe"],
+    "duration": "À définir",
+    "status": "draft",
+    "objectives": ["À préciser avec l’énoncé de veille et les attentes de restitution."],
+    "concepts": [{"title": "Contenu à préparer", "body": "Définir le périmètre de veille, les sources acceptées et les critères de synthèse avant publication."}],
+    "example": "À compléter après validation de la consigne.",
+    "exercises": ["Ajouter les livrables, critères de qualité et ressources de référence."],
+    "resources": [],
+    "quizId": null
+  }
+]

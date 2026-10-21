@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fa">
+  <meta name="description" content="Cours, travaux pratiques, briefs et quiz pour apprendre le deep learning et la data.">
+  <title>Carnet de cours · Formation Data</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <div class="layout">
+    <aside class="side">
+      <a class="brand" href="./" aria-label="Carnet de cours, accueil">
+        <span class="brand-mark" aria-hidden="true">C.</span>
+        <span><span class="brand-name">Carnet de cours</span><span class="brand-sub">Formation Data Engineer</span></span>
+      </a>
+      <nav class="sections" aria-label="Navigation principale">
+        <a href="#cours" data-view="cours" aria-current="page"><span aria-hidden="true">▦</span> Catalogue</a>
+        <a href="#quiz" data-view="quiz"><span aria-hidden="true">✓</span> Quiz <span id="quiz-nav-count" class="nav-count"></span></a>
+      </nav>
+      <div class="side-label">Explorer par thème</div>
+      <nav aria-label="Thèmes des cours" id="themes" class="themes"></nav>
+      <div class="side-actions">
+        <button class="mode" id="mode" type="button">Mode sombre</button>
+        <button class="reset-link" id="reset" type="button">Effacer mes données</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contenu" tabindex="-1">
+      <div id="storage-notice" class="notice" role="status" hidden></div>
+      <section id="view-cours">
+        <header class="hero">
+          <div class="eyebrow"><span class="live-dot"></span> Bibliothèque pédagogique · accès libre</div>
+          <h1>Apprendre, pratiquer,<br><span>progresser.</span></h1>
+          <p class="lede">Cours, TP et briefs pour explorer le deep learning et les métiers de la data. À ton rythme, sans compte.</p>
+          <div class="hero-stats" id="stats" aria-label="Contenus disponibles"></div>
+        </header>
+        <section class="catalogue" aria-labelledby="catalogue-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">À explorer</p><h2 id="catalogue-title">Le catalogue</h2></div>
+            <p id="result-count" class="result-count" aria-live="polite"></p>
+          </div>
+          <div class="tools">
+            <label class="search">
+              <span class="sr">Rechercher un cours</span>
+              <span aria-hidden="true" class="search-icon">⌕</span>
+              <input id="q" type="search" placeholder="Un sujet, une notion, un outil…" autocomplete="off">
+              <kbd>/</kbd>
+            </label>
+            <label class="select-wrap"><span class="sr">Filtrer par type</span>
+              <select id="type-filter">
+                <option value="all">Tous les formats</option>
+                <option value="tp">Travaux pratiques</option>
+                <option value="brief">Briefs</option>
+                <option value="cours">Cours</option>
+              </select>
+            </label>
+            <label class="select-wrap"><span class="sr">Filtrer par public</span>
+              <select id="audience-filter">
+                <option value="all">Tous les publics</option>
+                <option value="individuel">Apprentissage individuel</option>
+                <option value="groupe">Travail en groupe</option>
+              </select>
+            </label>
+          </div>
+          <div id="liste" class="catalogue-list" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section id="view-quiz" hidden>
+        <header class="subhero">
+          <p class="eyebrow">Réviser autrement</p>
+          <h1>Le coin des quiz<span>.</span></h1>
+          <p class="lede">Teste tes connaissances, découvre la correction après chaque réponse et retrouve tes meilleurs scores sur cet appareil.</p>
+        </header>
+        <div id="quiz-root" aria-live="polite"></div>
+      </section>
+      <footer class="foot">
+        <span>Fait pour apprendre, une notion à la fois.</span>
+        <span>Les cours et quiz restent consultables sans compte. <a href="./README.md#ajouter-un-cours-ou-un-quiz">Contribuer au contenu</a></span>
+      </footer>
+    </main>
+  </div>
+  <dialog id="reset-dialog" aria-labelledby="reset-title">
+    <form method="dialog" class="dialog-card">
+      <p class="eyebrow">Gestion de tes données</p>
+      <h2 id="reset-title">Effacer ta progression ?</h2>
+      <p>Cette action supprime de ce navigateur les cours terminés, les meilleurs scores et le thème choisi. Elle ne peut pas être annulée.</p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" value="cancel">Garder mes données</button>
+        <button class="button button-danger" value="confirm">Tout effacer</button>
+      </div>
+    </form>
+  </dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
