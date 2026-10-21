@@ -14,32 +14,50 @@
       "individuel",
       "groupe"
     ],
-    "duration": "45 min",
+    "duration": "Demi-journée",
     "status": "review",
     "objectives": [
-      "Préparer des variables numériques pour l’apprentissage.",
-      "Construire et entraîner un modèle de régression avec Keras.",
-      "Interpréter une erreur quadratique sur des données de test."
+      "Distinguer la régression (prédire un nombre) de la classification (prédire une catégorie).",
+      "Comprendre pourquoi une sortie sans activation et une perte MSE correspondent à une cible numérique.",
+      "Lire MAE, RMSE et R² et dire ce qu’ils signifient.",
+      "Reconnaître sous-apprentissage et surapprentissage sur les courbes, et mesurer face à une méthode simple."
     ],
     "concepts": [
       {
         "title": "Prédire une quantité",
-        "body": "En régression, la cible est numérique et continue. Le modèle produit une valeur, par exemple un prix ou une mesure."
+        "body": "En régression, la cible est numérique et continue : on prédit un nombre, pas une catégorie. Le TP fabrique un jeu à partir d’un sinus additionné d’un peu de bruit : la hauteur y doit être retrouvée à partir de la seule position x. Une droite ne peut pas épouser cette courbe ; un réseau de neurones, avec ses couches cachées, peut apprendre ce pliement. L’erreur s’exprime toujours dans l’unité de la cible, ce qui la rend directement lisible."
       },
       {
         "title": "Fonction de perte",
-        "body": "La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, après élévation au carré. Une erreur importante est ainsi davantage pénalisée."
+        "body": "La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, élevés au carré. Une importante erreur est ainsi beaucoup plus pénalisée que deux petites réunies. La couche de sortie est un seul neurone sans activation : sans borne, il peut produire n’importe quel nombre, là où une sigmoïde enfermerait la sortie entre 0 et 1. C’est la différence structurelle avec la classification : même architecture, mais sortie et perte différents."
       },
       {
         "title": "Échelle des variables",
-        "body": "La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise."
+        "body": "La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise. Le jeu de test subit la même transformation avec les mêmes nombres, jamais recalculés sur son propre contenu. C’est la règle anti-fuite qui protège l’évaluation."
+      },
+      {
+        "title": "La référence : une droite",
+        "body": "Avant tout réseau, on entraîne la méthode la plus simple possible : une LinearRegression, donc une droite. Son R² sur le test donne le plancher à dépasser. Le R² mesure la part de variation de la cible expliquée par le modèle : 1 est parfait, 0 ne fait pas mieux que prédire toujours la moyenne. Si un réseau coûteux n’ajoute rien face à une droite, le plus simple gagne."
+      },
+      {
+        "title": "Entraîner et lire la perte",
+        "body": "Un epoch est un passage complet sur les données d’apprentissage ; à chaque epoch, l’erreur est aussi mesurée sur un échantillon de validation mis de côté (validation_split). La courbe de perte doit baisser puis se stabiliser. Si elle plafonne tôt, le réseau est trop petit ou l’entraînement trop court. Si la perte de validation remonte pendant que celle d’entraînement baisse, le modèle mémorise le bruit : c’est le surapprentissage."
+      },
+      {
+        "title": "Sous-apprentissage et surapprentissage",
+        "body": "Le sous-apprentissage se lit sur les deux courbes qui stagnent en haut : le modèle est trop simple pour la tâche. Le surapprentissage se lit sur une perte d’entraînement qui continue de baisser pendant que la validation remonte : le modèle récite ses exemples, bruit compris. La comparaison des deux courbes au moment de l’arrêt dit quel problème a frappé, et quoi corriger."
+      },
+      {
+        "title": "Les métriques à interpréter",
+        "body": "MAE est l’erreur moyenne absolue : elle se lit dans l’unité de la cible, « à tant près ». RMSE est la racine de la MSE : elle pénalise les grosses erreurs et se lit dans la même unité. Le R² situe le modèle entre 0 (pas mieux que la moyenne) et 1 (parfait). Trois chiffres, trois regards : l’erreur humaine, la sensibilité aux erreurs graves, la qualité globale face à la variance des données."
       }
     ],
-    "example": "Pour prédire une consommation à partir de plusieurs mesures, la couche de sortie est généralement un neurone à activation linéaire : la prédiction n’est pas bornée entre 0 et 1.",
+    "example": "Prédire la hauteur y = sin(x) + bruit. On met x au format attendu par Keras, un tableau de forme (500, 1), puis on réserve 20 % des points pour le test. La régression linéaire plafonne sur une courbe et sert de référence. Le réseau : deux couches cachées de 32 neurones en ReLU, une sortie d’un neurone sans activation, compilé avec adam et la perte mse. On entraîne 200 epochs avec 20 % de validation : la perte baisse puis se stabilise, et les courbes montrent combien d’epochs étaient vraiment utiles. Le R² du réseau sur le test se compare ensuite à celui de la droite.",
     "exercises": [
-      "Repérer la variable cible et les variables d’entrée du jeu de données.",
-      "Comparer la perte d’entraînement et la perte de validation après plusieurs époques.",
-      "Expliquer dans l’unité de la cible ce que représente une erreur de prédiction."
+      "Repérer la variable cible et les variables d’entrée du jeu de données, et vérifier la forme du tableau (500 lignes, 1 colonne).",
+      "Noter le R² de la droite de référence au test, puis celui du réseau : quel gain, et vaut-il la complexité supplémentaire ?",
+      "Comparer la perte d’entraînement et la perte de validation à différents epochs et repérer l’epoch où les 200 devenaient inutiles.",
+      "Expliquer ce que représente une erreur de prédiction dans l’unité de la cible, en s’appuyant sur MAE ou RMSE."
     ],
     "resources": [
       {
@@ -83,47 +101,47 @@
     "concepts": [
       {
         "title": "Probabilité de classe",
-        "body": "Une sortie sigmoïde fournit une valeur entre 0 et 1. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe."
+        "body": "Une sortie sigmoïde fournit une valeur entre 0 et 1, lue comme une probabilité d’appartenir à la classe positive. Un modèle entraîné sur des tumeurs qui sort 0,82 estime à 82 % que la mesure vient d’une tumeur maligne. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe. Dans un contexte médical, on peut volontairement baisser ce seuil : le modèle annonce « maligne » plus souvent, quitte à déclencher un examen complémentaire qui coupe la mauvaise surprise."
       },
       {
         "title": "Découper et standardiser",
-        "body": "Le jeu de test ne doit jamais être vu pendant l’ajustement : le StandardScaler est ajusté sur le seul jeu d’apprentissage, puis appliqué tel quel au test."
+        "body": "On sépare les données en apprentissage et test avec train_test_split avant de toucher au modèle. Le StandardScaler est ajusté uniquement sur le bloc d’apprentissage, puis appliqué tel quel au test. Recalculer moyenne et écart-type sur le test serait une fuite d’information : le modèle verrait les statistiques de données qu’il ne doit pas connaître. La règle du TP : standardiser avec les statistiques de l’apprentissage seul."
       },
       {
         "title": "La référence à battre",
-        "body": "Une régression logistique (LogisticRegression) donne un score de référence très simple. Un réseau ne vaut la peine que s’il dépasse cette référence."
+        "body": "LogisticRegression est très simple, rapide à entraîner et facile à expliquer. Sur le jeu de tumeurs, elle obtient déjà un score solide : c’est la référence du TP. Un réseau de neurones ne vaut la peine que s’il apporte un gain tangible à protocole identique : même découpe, même standardisation, mêmes données. Sinon, l’interprétabilité et la vitesse de la régression logistique l’emportent."
       },
       {
         "title": "Entropie croisée binaire",
-        "body": "binary_crossentropy pénalise les probabilités attribuées aux classes réelles. Elle est adaptée à une sortie binaire."
+        "body": "binary_crossentropy compare, pour chaque exemple, la probabilité sortie par le réseau à la classe réelle. Elle punit très fort une sortie confiante dans le mauvais sens : annoncer 0,97 sur une tumeur bénigne coûte bien plus qu’un timide 0,55. C’est le pendant binaire de la perte catégorielle du TP3 : une seule sortie entre 0 et 1 pour deux classes, au lieu de N probabilités pour N classes."
       },
       {
         "title": "Construire le réseau",
-        "body": "Des couches denses avec activation ReLU, puis un neurone unique avec sigmoïde en sortie : une seule probabilité à interpréter."
+        "body": "Une architecture classique : deux à trois couches denses cachées en ReLU, puis une sortie unique en sigmoïde. Le réseau apprend à transformer les mesures brutes en une représentation où les deux classes se séparent nettement. Sur un jeu de cette taille, peu de neurones suffisent : trop de capacité ferait mémoriser chaque tumeur d’entraînement au lieu d’apprendre les tendances générales."
       },
       {
         "title": "Entraîner avec arrêt précoce",
-        "body": "EarlyStopping surveille la perte de validation : l’entraînement s’arrête quand elle cesse de s’améliorer et les meilleurs poids sont restaurés."
+        "body": "EarlyStopping surveille la perte de validation (monitor val_loss) et interrompt l’entraînement quand elle cesse de s’améliorer pendant plusieurs epochs d’affilée (patience). Avec restore_best_weights, le modèle final prend les meilleurs poids vus en cours de route. C’est une protection contre l’entraînement de trop, en un seul essai."
       },
       {
         "title": "Matrice de confusion",
-        "body": "Comparée à la main sur le test : VP, VN, FP, FN. Précision = « quand j’annonce, ai-je raison ? ». Rappel = « combien en ai-je retrouvé ? »."
+        "body": "Elle se calcule à la main sur le test : vrais positifs, vrais négatifs, faux positifs, faux négatifs. La précision répond « quand le modèle annonce maligne, a-t-il raison ? ». Le rappel répond « combien des tumeurs malignes réelles a-t-il attrapées ? ». Une accuracy élevée peut cacher un modèle qui rate toute une classe minoritaire : ces deux chiffres racontent des choses différentes."
       },
       {
         "title": "Le seuil de décision",
-        "body": "Le déplacer règle le compromis précision/rappel : monter le seuil réduit les faux positifs mais augmente les faux négatifs. Le contexte décide de l’erreur la plus grave."
+        "body": "Baisser le seuil augmente le rappel et baisse la précision ; le remonter fait l’inverse. Aucun seuil n’est universellement juste : le contexte décide de l’erreur la plus grave. En diagnostic médical, un faux négatif — renvoyer un patient malade chez lui — coûte potentiellement beaucoup plus qu’un faux positif, un simple examen supplémentaire. Le TP fait mesurer ce compromis dans les deux directions."
       },
       {
         "title": "La courbe ROC",
-        "body": "Elle trace le taux de vrais positifs contre le taux de faux positifs pour tous les seuils. L’AUC résume cette courbe en un seul chiffre."
+        "body": "Pour tous les seuils possibles, la courbe ROC trace le taux de vrais positifs contre le taux de faux positifs. Un modèle parfait se colle au coin supérieur gauche ; un modèle au hasard suit la diagonale. L’AUC résume la courbe en un chiffre entre 0,5 et 1 : comparer des modèles sans choisir un seuil au hasard. roc_curve et roc_auc_score font le travail sans relancer d’entraînement."
       }
     ],
-    "example": "Sur des mesures de tumeurs (load_breast_cancer) : entraîner le réseau avec EarlyStopping, prédire une probabilité (par exemple 0,82) et la comparer au seuil 0,5 pour annoncer « maligne ». Recompter FP et FN dans la matrice, puis monter le seuil à 0,7 : les faux négatifs augmentent pendant que les faux positifs baissent. La courbe ROC trace ce compromis pour tous les seuils possibles.",
+    "example": "Sur des mesures de tumeurs (load_breast_cancer) : le jeu est découpé, standardisé avec les statistiques de l’apprentissage seul, et la régression logistique fixe la référence. Le réseau : des couches denses ReLU reliées à une sortie sigmoïde unique, entraîné avec binary_crossentropy et EarlyStopping sur la perte de validation. Chaque exemple obtient une probabilité, par exemple 0,82, comparée au seuil 0,5 pour décider « maligne ». La matrice de confusion est recomptée à la main, puis le seuil est déplacé à 0,7 : les faux négatifs augmentent, les faux positifs baissent. La courbe ROC et son AUC synthétisent le compromis pour tous les seuils.",
     "exercises": [
-      "Recalculer à la main précision et rappel à partir de la matrice affichée dans le notebook.",
-      "Déplacer le seuil (0,3 et 0,7) et consigner l’effet exact sur les faux positifs et les faux négatifs.",
-      "Comparer accuracy d’une régression logistique et du réseau ; expliquer l’écart ou son absence.",
-      "Expliquer, dans un contexte médical, quel type d’erreur coûte le plus cher et pourquoi."
+      "Recalculer à la main précision et rappel à partir de la matrice affichée dans le notebook, puis vérifier avec precision_score et recall_score.",
+      "Déplacer le seuil à 0,3 et 0,7 et consigner l’effet exact sur les faux positifs et les faux négatifs.",
+      "Comparer accuracy et AUC de la régression logistique et du réseau : l’écart dépasse-t-il les variations entre deux graines ?",
+      "Expliquer, dans un contexte médical, quel type d’erreur coûte le plus cher et quel seuil cette préférence implique."
     ],
     "resources": [
       {
@@ -166,43 +184,43 @@
     "concepts": [
       {
         "title": "Softmax",
-        "body": "La fonction softmax transforme les scores de sortie en probabilités dont la somme vaut 1. La couche de sortie compte autant de neurones que de classes."
+        "body": "La fonction softmax transforme les scores bruts de sortie en N probabilités positives dont la somme vaut 1. Pratiquement, on prend l’exponentielle de chaque score et on divise par la somme de toutes les exponentielles. Un score nettement au-dessus des autres attire ainsi presque toute la masse. La couche de sortie compte autant de neurones que de classes : dix chiffres, dix probabilités."
       },
       {
         "title": "Étiquettes entières",
-        "body": "Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot."
+        "body": "Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot. Elle compare directement la probabilité attribuée à la bonne classe. categorical_crossentropy attendrait elle un one-hot de dix cases, plus lourd à manipuler : choisir la version sparse change la forme des étiquettes, pas le modèle."
       },
       {
         "title": "La référence",
-        "body": "La réponse du réseau est l’argmax des probabilités. Avant tout entraînement, les dix probabilités tournent autour de 0,1 : le réseau ne sait encore rien."
+        "body": "La réponse du réseau est l’argmax des probabilités, la classe proposée avec la plus grande valeur. Avant tout entraînement, les dix probabilités tournent autour de 0,1 : le réseau ne sait encore rien, sa sortie suit le hasard de l’initialisation. Prédire avant d’entraîner est une bonne habitude : une sortie déjà très concentrée trahit un problème de construction, à régler avant toute chose."
       },
       {
         "title": "Des images aplaties",
-        "body": "Chaque image 8×8 de load_digits est mise à plat en vecteur de 64 valeurs pour un réseau dense. La géométrie spatiale est perdue : c’est ce que le TP4 corrigera."
+        "body": "Chaque image 8×8 de load_digits est mise à plat en vecteur de 64 valeurs pour pouvoir entrer dans un réseau dense. La géométrie spatiale est perdue : deux pixels voisins deviennent deux cases arbitraires, et décaler le motif d’un pixel bouleverse le tableau. C’est cette limitation que le TP4 corrigera avec la convolution."
       },
       {
         "title": "Courbes d’apprentissage",
-        "body": "On suit accuracy et perte sur les jeux d’apprentissage et de validation, époque après époque, avant de se prononcer."
+        "body": "On suit accuracy et perte sur les jeux d’apprentissage et de validation, époque après époque. Les deux courbes qui stagnent ensemble signent un plafond atteint. La perte de validation qui remonte pendant que celle d’entraînement baisse signe le surapprentissage. Ces courbes racontent quand et comment le modèle a appris : elles valent mieux qu’un chiffre final."
       },
       {
         "title": "Évaluer sur le test",
-        "body": "Le test est utilisé une fois, à la fin, pour mesurer la généralisation réelle du modèle entraîné."
+        "body": "Le test est utilisé une fois, à la fin, pour mesurer la généralisation réelle du modèle entraîné. Ajuster ses choix en observant le test est une fuite d’évaluation : le score devient trop optimiste et se paye en condition réelle. La règle du TP : garder le test scellé jusqu’au verdict."
       },
       {
         "title": "Matrice de confusion à 10 classes",
-        "body": "Affichée en image, elle révèle les paires de chiffres que le modèle confond le plus souvent."
+        "body": "Affichée en image avec imshow, sa diagonale recueille les bonnes réponses. Les cases hors diagonale montrent les confusions : une case marquée entre deux chiffres visuellement proches dit beaucoup sur ce que le modèle « voit ». Lire ces confusions guide directement ce qu’il faut améliorer : données, modèle, ou rien."
       },
       {
         "title": "Regarder les erreurs",
-        "body": "Afficher les images mal classées est aussi important que lire la précision : cela montre si l’erreur était plausible."
+        "body": "Afficher des images mal classées est aussi important que lire la précision. Beaucoup d’erreurs sont plausibles : un chiffre écrit vite ressemble à son voisin. D’autres surprennent et méritent une lecture attentive. Cette inspection sert à décider quoi améliorer : données, prétraitement, ou modèle."
       }
     ],
-    "example": "Reconnaître des chiffres écrits à la main (load_digits, 10 classes) : réseau dense, couche de sortie de 10 neurones en softmax, perte sparse_categorical_crossentropy sans encodage one-hot. Avant l’entraînement, le réseau répond environ 10 % sur chaque classe. Après l’entraînement, la matrice de confusion visuelle fait ressortir les paires de chiffres confondues, et l’affichage des images mal prédites permet de voir pourquoi.",
+    "example": "Classifier les chiffres écrits à la main (load_digits, dix classes) : réseau dense, couche de sortie de dix neurones en softmax, perte sparse_categorical_crossentropy sans encodage one-hot. Avant l’entraînement, le réseau répond environ 10 % sur chaque classe. Après l’entraînement, la matrice de confusion visuelle fait ressortir les paires de chiffres confondues, et l’affichage des images mal prédites montre que beaucoup d’erreurs se défendent : l’écriture réelle était ambiguë. La régression logistique reste la référence, et le réseau dense se juge contre elle.",
     "exercises": [
       "Vérifier la forme de la couche de sortie par rapport au nombre de classes.",
-      "Comparer le score de la régression logistique de référence (LogisticRegression) à celui du réseau.",
-      "Afficher trois images mal classées et expliquer en quoi l’erreur était plausible.",
-      "Repérer dans la matrice la paire de classes la plus souvent confondue."
+      "Comparer le score de la régression logistique de référence à celui du réseau, même découpe et même protocole.",
+      "Afficher trois images mal classées et expliquer pourquoi l’erreur était plausible ou surprenante.",
+      "Repérer dans la matrice la paire de classes la plus souvent confondue et l’expliquer visuellement."
     ],
     "resources": [
       {
@@ -245,39 +263,39 @@
     "concepts": [
       {
         "title": "Remettre les images en forme",
-        "body": "Les vecteurs aplatis du TP3 sont remis en cartes 8×8×1 : c’est la forme d’entrée attendue par une couche Conv2D."
+        "body": "Les vecteurs aplatis du TP3 sont remis en cartes 8×8×1 : hauteur, largeur, canal. C’est la forme d’entrée attendue par une couche Conv2D, qui manipule des données spatiales. Une image couleur exigerait trois canaux, rouge, vert et bleu. Ce reshape se fait en une ligne avec NumPy, mais il remet les données dans la forme qui permet la convolution."
       },
       {
         "title": "Convolution",
-        "body": "Un filtre 3×3 partagé parcourt l’image (convolve2d pour l’essayer à la main) et répond à des motifs locaux comme des bords ou des traits."
+        "body": "Un filtre 3×3 glisse sur chaque position de l’image et produit une carte de caractéristiques : chaque valeur répond à « ce motif est présent ici ». Le TP fait tester un filtre détection de contours à la main avec convolve2d : on voit le contour apparaître là où l’intensité des pixels change. Les mêmes poids sont réutilisés à chaque position : c’est ce partage qui explique l’essentiel du gain en paramètres."
       },
       {
         "title": "Max pooling",
-        "body": "Le pooling réduit la résolution spatiale en conservant une valeur représentative dans chaque zone : la carte devient plus petite, l’information essentielle reste."
+        "body": "Le max pooling réduit la résolution spatiale en conservant le maximum de chaque bloc, typiquement 2×2. Hauteur et largeur sont divisées par deux, le calcul s’allège, et l’information importante survit. On perd en contrepartie la position précise du maximum, ce qui est souvent acceptable."
       },
       {
         "title": "Construire le CNN",
-        "body": "Conv2D, puis MaxPooling2D, puis Flatten, puis Dense. Les mêmes poids sont réutilisés à chaque position : il y a beaucoup moins de paramètres qu’une couche dense sur les pixels."
+        "body": "Un CNN empile Conv2D, par exemple huit filtres 3×3 en ReLU, puis MaxPooling2D, puis Flatten, puis une Dense vers dix sorties softmax. Les poids de la convolution sont réutilisés à chaque position : le CNN compte beaucoup moins de paramètres qu’une Dense appliquée aux mêmes pixels. La pyramide, des dimensions qui rétrécissent et des représentations qui s’enrichissent, est la signature de l’architecture convolutive."
       },
       {
         "title": "Apprentissage hiérarchique",
-        "body": "Les couches successives combinent des motifs simples (bords) en représentations plus complexes (boucles, formes)."
+        "body": "Les premières couches apprennent des motifs simples : bords, coins. Les suivantes les combinent en éléments complets : boucles, arêtes. Les dernières lient ces éléments aux classes finales. Chaque couche passe à un niveau d’abstraction supérieur : c’est le mécanisme de composition qui explique la puissance des réseaux profonds sur les images."
       },
       {
         "title": "Comparer honnêtement",
-        "body": "Sur de petites images propres et bien centrées, le CNN peut faire à peu près comme le réseau dense : pas de magie automatique."
+        "body": "Sur de petites images propres et bien centrées, le CNN peut faire à peu près comme le réseau dense du TP3 : pas de magie automatique. La comparaison doit respecter un protocole identique : mêmes données, même découpe, même standardisation, même budget d’epochs. Le CNN prend l’avantage quand les images sont plus grandes, plus variées, ou quand la position du motif dans l’image varie."
       },
       {
         "title": "Le test du décalage",
-        "body": "Décaler les chiffres d’un pixel (np.roll) fait s’effondrer un modèle entraîné sur des images trop bien centrées. Tester la robustesse est indispensable."
+        "body": "Décaler chaque chiffre d’un pixel avec np.roll suffit à faire s’effondrer un modèle entraîné sur des images centrées : il a appris la position, pas le motif. C’est une variation banale dans les données réelles, pourtant le modèle peut se dégrader fortement. Deux leçons : tester la robustesse est indispensable, et la convolution, grâce au partage de poids, résiste en général mieux aux décalages que le réseau dense."
       }
     ],
-    "example": "Appliquer à la main un filtre 3×3 sur une image (convolve2d) pour voir ce qu’une convolution détecte. Puis le CNN complet : Conv2D (par exemple 8 filtres), MaxPooling2D, Flatten, Dense. Comparer le nombre de paramètres avec le réseau dense du TP3 : le CNN est souvent plus léger en même temps que plus précis. Enfin, décaler chaque image d’un pixel et mesurer la chute des deux modèles.",
+    "example": "Appliquer à la main convolve2d avec un filtre détecteur de contours sur une image pour voir ce qu’une convolution détecte. Puis construire le CNN : Conv2D à huit filtres, MaxPooling2D, Flatten, Dense vers dix sorties softmax. Comparer le nombre de paramètres avec le réseau dense du TP3 : le CNN est souvent plus léger. Enfin, décaler chaque image d’un pixel et mesurer la chute des deux modèles : le réseau dense s’effondre, le CNN tient nettement mieux grâce au partage de poids.",
     "exercises": [
-      "Suivre la forme du tenseur après convolution, pooling et flatten.",
-      "Compter et comparer les paramètres d’une couche dense et d’une couche convolutive.",
-      "Décaler les images d’un pixel et noter la chute de précision des deux modèles, CNN contre dense.",
-      "Extraire les poids de la première couche convolutive (get_weights) et deviner ce que chaque filtre cherche."
+      "Suivre la forme du tenseur après reshape, convolution, pooling et flatten, sans confondre dimension de batch et canal.",
+      "Compter et comparer les paramètres d’une couche dense et d’une couche convolutive pour les mêmes données d’entrée.",
+      "Décaler les images d’un pixel et noter la chute de précision des deux modèles, CNN contre réseau dense.",
+      "Extraire les poids de la première couche convolutive avec get_weights et deviner ce que chaque filtre cherche."
     ],
     "resources": [
       {
@@ -321,43 +339,43 @@
     "concepts": [
       {
         "title": "Surapprentissage",
-        "body": "Un modèle qui s’améliore sur l’entraînement mais se dégrade sur des données non vues mémorise en partie ses exemples."
+        "body": "Un modèle qui s’améliore sur l’entraînement mais se dégrade sur des données non vues mémorise ses exemples au lieu d’apprendre des règles. Le bruit auquel il s’est ajusté ne se reproduit pas sur les données suivantes. C’est le défaut le plus courant du deep learning : il arrive quand les données sont trop peu nombreuses, ou quand la capacité du modèle dépasse largement ce qu’il faut pour les représenter."
       },
       {
         "title": "Regarder la perte, pas la précision",
-        "body": "La précision peut rester stable pendant que la perte de validation remonte : les courbes de perte sont l’indicateur fiable."
+        "body": "La précision peut rester stable pendant que la perte de validation remonte : des erreurs légères deviennent grossières sans changer de camp. C’est la perte qui détecte ce dérapage, la précision reste aveugle. Les remèdes qui suivent se comparent donc sur la perte de validation, et le point où elle est minimale est celui où l’entraînement devait s’arrêter."
       },
       {
         "title": "Un petit jeu pour provoquer",
-        "body": "Avec peu d’exemples et un long entraînement, le surapprentissage apparaît vite : parfait sur l’entraînement, mauvais sur la validation."
+        "body": "Avec peu d’exemples et un entraînement prolongé, le surapprentissage apparaît vite : le modèle revoit parfaitement chacun de ses points, bruit compris. Le TP provoque volontairement ce problème pour l’observer nettement. Savoir le rendre lisible est la première étape pour le repérer ensuite sur ses propres projets."
       },
       {
         "title": "Remèdes à comparer",
-        "body": "Arrêt précoce (EarlyStopping), dropout, pénalité L2 (kernel_regularizer=regularizers.l2), réseau plus petit, ou plus de données. Tous se comparent sur la validation."
+        "body": "EarlyStopping stoppe à la perte de validation minimale et restaure les meilleurs poids. Dropout coupe aléatoirement une fraction des activations. La pénalité L2, avec kernel_regularizer=regularizers.l2, décourage les très grands poids. Un réseau plus petit réduit la capacité à mémoriser. Plus de données, ou l’augmentation, s’attaque au problème à sa racine. Tous se comparent sur la validation, à protocole identique."
       },
       {
         "title": "Dropout",
-        "body": "Pendant l’entraînement, Dropout désactive aléatoirement une partie des activations afin de limiter les dépendances excessives."
+        "body": "Pendant l’entraînement, Dropout désactive aléatoirement une fraction des activations, typiquement 20 à 50 %, puis les réactive à l’inférence. Aucune connexion ne peut alors soutenir seule la prédiction : le réseau devient redondant. Chaque itération travaille sur un sous-réseau différent, ce qui moyenne le comportement. Sur un petit jeu, un taux trop élevé peut empêcher le réseau d’apprendre quoi que ce soit : le bon taux se règle sur la validation."
       },
       {
         "title": "Le bruit de la mesure",
-        "body": "La marge 1,96 × √(p(1−p)/n) donne l’incertitude d’une proportion : un gain n’existe que s’il dépasse cette marge sur le test."
+        "body": "Sur un échantillon fini, une accuracy mesurée est une estimation. La marge 1,96 × √(p(1−p)/n) encadre une proportion p mesurée sur n exemples. Pour p de l’ordre de 0,85 et un test de cent exemples, cela tourne autour de plus ou moins six points. Une amélioration plus petite que cette marge n’est pas un gain démontrable : c’est du bruit d’échantillonnage."
       },
       {
         "title": "La graine",
-        "body": "Avec set_random_seed, relancer l’entraînement change le résultat : répéter sur plusieurs graines et comparer moyenne et écart-type, pas une seule exécution."
+        "body": "set_random_seed rend l’initialisation des poids et l’ordre des mini-batchs reproductibles. La même graine donne le même modèle ; changer de graine fait varier le résultat de plusieurs dixièmes de point. La bonne pratique : répéter l’entraînement sur plusieurs graines et rapporter moyenne et écart-type, jamais une seule exécution."
       },
       {
         "title": "Augmentation de données",
-        "body": "Fabriquer des exemples décalés (np.roll) ou bruités apprend au modèle à ignorer ces variations. On n’augmente jamais le jeu de test."
+        "body": "Fabriquer des exemples supplémentaires en décalant les images (np.roll), en les retournant ou en y ajoutant du bruit expose le modèle aux variations qu’il devra ignorer plutôt qu’apprendre. On n’augmente jamais le jeu de test : sinon la taille réelle du test et l’honnêteté de la mesure disparaissent. C’est un des remèdes les plus efficaces, et ici on le prépare sur un CNN avant de l’appliquer."
       }
     ],
-    "example": "Sur un petit jeu, entraîner longtemps sans remède : la perte d’entraînement baisse alors que celle de validation remonte. Relancer avec EarlyStopping, puis avec Dropout, puis avec L2, puis en réduisant la couche : chaque variante se compare sur la validation. Ensuite, calculer la marge de bruit : une différence de précision inférieure à cette marge n’est pas un gain.",
+    "example": "Sur un jeu réduit, entraîner longtemps sans remède produit le surapprentissage : la perte d’entraînement descend, celle de validation remonte. Relancer avec EarlyStopping, puis Dropout, puis une pénalité L2, puis une couche réduite : chaque variante se compare sur la validation à protocole constant. Enfin, calculer la marge de bruit du jeu de test : une différence de précision inférieure à cette marge ne prouve rien, quelle que soit l’impression visuelle sur les courbes.",
     "exercises": [
-      "Tracer les pertes d’entraînement et de validation et localiser le moment où le surapprentissage commence.",
-      "Comparer un modèle avec et sans Dropout, puis avec et sans pénalité L2.",
-      "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés.",
-      "Calculer la marge de bruit du jeu de test et décider si l’amélioration d’un remède en fait partie."
+      "Tracer les pertes d’entraînement et de validation et localiser précisément le moment où le surapprentissage commence.",
+      "Comparer un modèle avec et sans Dropout, puis avec et sans pénalité L2, en gardant le protocole identique.",
+      "Vérifier quelle métrique pilote l’arrêt anticipé et quels poids sont restaurés si restore_best_weights est actif.",
+      "Calculer la marge de bruit du jeu de test et décider si l’amélioration d’un remède en fait partie ou non."
     ],
     "resources": [
       {
@@ -401,42 +419,42 @@
     "concepts": [
       {
         "title": "Hyperparamètres",
-        "body": "Taux d’apprentissage, taille des couches, dropout, batch : tout ce qui est fixé avant l’entraînement, par opposition aux poids que le modèle apprend."
+        "body": "Les poids d’un réseau sont des paramètres : le modèle les apprend. Taux d’apprentissage, nombre de neurones et de couches, taux de dropout, taille de batch sont des hyperparamètres : vous les fixez avant l’entraînement et vous les explorez par essais comparés. Changer un seul de ces réglages peut améliorer ou dégrader nettement le modèle : savoir quels leviers sont sensibles est la première compétence de l’optimisation."
       },
       {
         "title": "Explorer le taux d’apprentissage",
-        "body": "Le premier réglage à tester : trop grand, l’entraînement diverge ; trop petit, il stagne. On observe l’effet direct sur les courbes."
+        "body": "Trop grand, l’entraînement oscille ou diverge : la perte part en vrille. Trop petit, il stagne ou avance très lentement. C’est le réglage le plus visible sur les courbes, donc le premier à explorer. On balaie par ordres de grandeur : 0,001, 0,003, 0,01, 0,03. L’ordre de grandeur compte plus que la valeur exacte."
       },
       {
         "title": "Recherche aléatoire",
-        "body": "Tirer des configurations au hasard (random.choice), entraîner chaque essai, classer les résultats par perte de validation (pd.DataFrame.sort_values). Keras Tuner (RandomSearch) automatise la même démarche."
+        "body": "On tire des configurations au hasard avec random.choice, sur une liste de valeurs pour chaque hyperparamètre, puis on entraîne chaque essai et on trie les résultats sur la perte de validation avec pd.DataFrame.sort_values. Quand plusieurs dimensions sont à explorer, cette approche bat souvent la recherche exhaustive. Keras Tuner et son RandomSearch automatisent la même démarche, avec suivi des essais et reprise possible."
       },
       {
         "title": "Validation, jamais le test",
-        "body": "Les essais se comparent sur une métrique de validation. Le jeu de test sert une seule fois, à la fin, pour évaluer le modèle retenu."
+        "body": "Les essais se comparent sur une métrique de validation. Le jeu de test sert une seule fois, à la fin, pour évaluer le modèle retenu. Choisir la meilleure configuration sur le test reviendrait à calibrer le modèle sur ses données d’évaluation finale : le chiffre serait trop optimiste et le modèle moins bon en conditions réelles."
       },
       {
         "title": "Plusieurs graines",
-        "body": "Une configuration retenue doit être réentraînée avec plusieurs graines : seule la moyenne, comparée à l’écart-type, décide si le gain est réel."
+        "body": "Une configuration retenue doit être réentraînée avec plusieurs graines, et ses résultats comparés en moyenne et en écart-type. Une exécution chanceuse peut paraître supérieure une fois, deux fois : la validation multi-graines dit si l’écart dépasse la variabilité. Même esprit que le TP5 et le défi moons, ici à l’échelle des hyperparamètres."
       },
       {
         "title": "Élagage (pruning)",
-        "body": "Mettre à zéro une partie des poids (par exemple 80 %) donne un modèle creux : presque aucune perte de précision, et un poids total exploitable pour la compression."
+        "body": "Mettre à zéro une grande fraction des poids, par exemple 80 %, donne un modèle creux. En pratique l’intérêt se voit lors de la compression du fichier : tant que l’encodage ne compresse pas les zéros, un modèle élagué pèse autant que l’original. La précision se mesure avant et après sur le test : la perte attendue est faible."
       },
       {
         "title": "Quantification",
-        "body": "tf.lite.TFLiteConverter enregistre un modèle TensorFlow Lite où les poids 32 bits deviennent 8 bits : fichier bien plus léger, précision à comparer avec Interpreter."
+        "body": "tf.lite.TFLiteConverter enregistre un modèle TensorFlow Lite où les poids 32 bits deviennent des poids 8 bits : fichier nettement plus léger, exécution envisageable sur matériel embarqué. La précision se re-mesure avec tf.lite.Interpreter sur le même jeu de test : en pratique, la perte reste souvent très faible. Comparer os.path.getsize avant et après, et la précision : les deux chiffres, ensemble, décrivent le compromis."
       },
       {
-        "title": "Le compromis à chiffrer",
-        "body": "Pour chaque version (départ, meilleure config, élaguée, quantifiée) : précision sur le test et taille du fichier (os.path.getsize). Un gain ne compte que s’il dépasse le bruit."
+        "title": "Le tableau de synthèse",
+        "body": "Le TP conclut en un tableau à quatre lignes : modèle de départ (32 neurones, 2 couches, lr 0,001, environ 89 Ko), meilleure configuration, version élaguée, version quantifiée, avec précision de test et taille de fichier pour chacun. Moins de mémoire contre à peu près la même précision, ou l’inverse : ce tableau rend l’arbitrage visible, et c’est exactement le jugement professionnel attendu en fin de TP."
       }
     ],
-    "example": "Modèle de départ : 2 couches, 32 neurones, lr = 0,001. La recherche aléatoire teste plusieurs taux d’apprentissage et tailles de couches, classe les essais sur la validation puis la meilleure configuration est revérifiée sur plusieurs graines. Enfin : élagage (80 % des poids à zéro), quantification en .tflite, et un tableau final qui met face à face précision du test et taille du fichier pour chaque version.",
+    "example": "Modèle de départ : deux couches, 32 neurones, taux d’apprentissage 0,001. La recherche aléatoire teste plusieurs taux d’apprentissage et des tailles de couches ; les essais sont triés sur la perte de validation, puis la meilleure configuration est revérifiée sur plusieurs graines. Le modèle final passe à l’export : élagage avec 80 % des poids à zéro, quantification TensorFlow Lite en 8 bits, comparaison avec Interpreter entre les précisions des deux versions et os.path.getsize des tailles de fichiers. Le compte rendu se termine par le tableau de synthèse : précision et taille pour chaque version, et un jugement sur le compromis.",
     "exercises": [
       "Compléter le tableau de synthèse du notebook (précision de test et taille pour chaque version du modèle).",
-      "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai.",
-      "Comparer taille et précision du modèle avant et après quantification.",
+      "Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai, avec un exemple concret de sélection biaisée.",
+      "Comparer le modèle avant et après élagage puis après quantification : taille de fichier, précision, temps d’inférence.",
       "Décider, chiffres en main, si le gain de la meilleure configuration est réel ou du même ordre que le bruit."
     ],
     "resources": [
@@ -490,37 +508,45 @@
     "concepts": [
       {
         "title": "Pourquoi prétraiter",
-        "body": "Un modèle ne sait pas lire du texte brut : il faut découper, normaliser, puis transformer chaque texte en vecteur de nombres."
+        "body": "Un modèle ne sait pas lire du texte brut : tout doit devenir un vecteur de nombres. Le vocabulaire naïf d’un corpus est énorme, avec des dizaines de variantes d’un même mot, des majuscules et de la ponctuation qui gonflent l’espace sans apporter du signal. Prétraiter, c’est réduire cet espace : découper, normaliser, retirer les mots sans information, ramener les variantes sous une même forme, puis vectoriser. Chaque étape a un effet mesurable sur la qualité et la taille du modèle final."
       },
       {
         "title": "Tokenisation",
-        "body": "Le texte est séparé en unités (mots, ponctuation), souvent avec une regex (RegexpTokenizer), et passé en minuscules : ce sont les éléments de tout le reste du traitement."
+        "body": "Le texte est séparé en unités, mots et ponctuation, souvent avec une regex (RegexpTokenizer), puis passé en minuscules. Une même phrase produit des tokens différents selon l’expression choisie, et la ponctuation mérite une décision explicite. C’est la brique de base : toutes les étapes suivantes opèrent sur ces tokens, et changer la tokenisation change tout le pipeline."
       },
       {
         "title": "Mots vides",
-        "body": "Les mots très fréquents et peu discriminants (« le », « la », « de ») sont retirés : le vocabulaire restant porte l’information utile."
+        "body": "Les mots très fréquents et peu discriminants (le, la, de) sont identifiés par des listes (nlp.Defaults.stop_words) puis retirés : le vocabulaire restant porte l’information utile. Ce nettoyage apporte souvent un gain net de précision, car ces mots dominent la fréquence sans séparer les catégories. Attention aux cas particuliers comme la négation « pas » : retirer sans réfléchir peut effacer un signal essentiel."
       },
       {
         "title": "Racine contre lemme",
-        "body": "PorterStemmer (NLTK) coupe les mots à une racine approchée (rapide, « studi ») ; spaCy ramène à la forme correcte token.lemma_ (grammaticalement juste, « study ») mais plus lente."
+        "body": "PorterStemmer (NLTK) coupe les mots vers une racine grossière par des règles : rapide, sans dictionnaire, mais approximatif (« studi »). spaCy, avec token.lemma_, ramène chaque mot à sa forme de base grammaticalement correcte (« study ») : plus lent, mais plus juste. Le choix dépend du besoin : stemming pour traiter vite du volume, lemmatisation quand la forme exacte compte. Sur la précision finale, l’effet est souvent modeste ; la différence se voit mieux dans le texte transformé qu’on relit."
       },
       {
         "title": "Entités nommées",
-        "body": "doc.ents donne les personnes, lieux et organisations (ent.label_) : le « qui, où, quand ». L’extraction est imparfaite, il faut ensuite chercher les ambiguïtés (labels différents pour un même mot)."
+        "body": "spaCy reconnaît les entités nommées : doc.ents identifie des personnes, lieux et organisations, et ent.label_ donne le type (spacy.explain décode les codes). C’est l’extraction du « qui, où, quand » à partir de texte libre : une forme directe de passage du texte brut à la donnée structurée. L’extraction est imparfaite, et chercher les ambiguïtés fait partie du métier."
       },
       {
         "title": "TF-IDF",
-        "body": "Cette pondération valorise les termes fréquents dans un document mais rares dans le corpus. Le vocabulaire est appris sur le seul jeu d’apprentissage (fit sur le train, transform sur le test)."
+        "body": "TfidfVectorizer transforme chaque texte en vecteur de nombres : chaque terme est pondéré par sa fréquence dans le document, corrigée par sa rareté dans le corpus. Un mot présent dans presque tous les documents perd de l’importance ; un mot spécifique gagne. Le vocabulaire, la liste des termes connus et de leur indice, est appris sur le jeu d’apprentissage seul : fit sur le train, transform sur le test."
       },
       {
         "title": "Mesurer honnêtement",
-        "body": "Le même modèle (par exemple LogisticRegression sur TF-IDF) est comparé entre versions du texte, et la moyenne est prise sur plusieurs découpages train/test : avec peu de données, le hasard peut masquer ou exagérer les effets."
+        "body": "Le même modèle, par exemple une LogisticRegression sur TF-IDF, est entraîné sur chaque version du texte, et la moyenne est prise sur plusieurs découpages train/test. Les résultats du TP : les mots vides apportent souvent un gain net de précision, tandis que racines et lemmes réduisent surtout la taille du modèle. Avec peu de données, le hasard peut masquer ou exagérer les effets : sans moyenne sur plusieurs découpages, on conclut sur du bruit."
+      },
+      {
+        "title": "Le pipeline complet",
+        "body": "Ordre standard : tokeniser avec RegexpTokenizer, mettre en minuscules, retirer les mots vides, ramener les mots à une forme de base avec PorterStemmer ou token.lemma_, puis vectoriser avec TfidfVectorizer et entraîner le classifieur. Chaque étape s’appuie sur la précédente, et un défaut en amont pollue tout ce qui suit. Comparer les versions du prétraitement en ne changeant qu’une seule étape à la fois rend l’expérimentation lisible."
+      },
+      {
+        "title": "Lien avec le référentiel",
+        "body": "Ce TP couvre une compétence explicitement listée : les outils NLP comme spaCy et NLTK, l’extraction précise des entités, la normalisation du texte, la réduction des ambiguïtés et l’optimisation des performances des modèles. Chaque étape fait correspondre à un attendu du référentiel, et la trame du notebook reprend cette correspondance dans un tableau final. Relier chaque geste à cet attendu est la meilleure préparation à la restitution."
       }
     ],
-    "example": "2 400 résumés de films à classer en horreur ou comédie : chaque version du texte (brut, sans mots vides, racines, lemmes) passe par TfidfVectorizer puis LogisticRegression. Les mots vides apportent souvent un gain net sur la précision, tandis que racines et lemmes surtout réduisent la taille du modèle ; sans comparaison moyenne sur plusieurs découpages, on risque de conclure sur du bruit.",
+    "example": "Environ deux mille résumés de films à classer en horreur ou comédie. Chaque version du texte, brut, sans mots vides, stemmée avec PorterStemmer ou lemmatisée avec spaCy, passe par le même pipeline : TfidfVectorizer et LogisticRegression, avec fit du vocabulaire sur l’apprentissage seul. La comparaison est faite en moyenne sur plusieurs découpages train/test : le nettoyage des mots vides apporte souvent un gain net de précision, tandis que racines et lemmes réduisent surtout la taille du modèle. L’extraction d’entités complète ce travail en préparant une donnée structurée réutilisable ailleurs.",
     "exercises": [
-      "Suivre un même texte à travers tokenisation, mots vides et lemmatisation, et noter ce qui disparaît.",
-      "Comparer la même phrase stemmée (PorterStemmer) et lemmatisée (spaCy) et expliquer la différence.",
+      "Suivre un même texte à travers tokenisation, mots vides et lemmatisation, et noter ce qui disparaît à chaque étape.",
+      "Comparer la même phrase stemmée (PorterStemmer) et lemmatisée (spaCy) et expliquer les différences observées.",
       "Extraire les entités d’un résumé et repérer une extraction erronée ou ambiguë.",
       "Comparer accuracy moyenne et taille du vocabulaire entre les versions du prétraitement, sur plusieurs découpages."
     ],
@@ -600,31 +626,31 @@
     "concepts": [
       {
         "title": "Séparation des données",
-        "body": "Le jeu de test mesure la généralisation ; il ne sert pas à ajuster le prétraitement ni à choisir les hyperparamètres."
+        "body": "Le jeu de test mesure la généralisation : il ne doit influencer aucun choix, ni prétraitement, ni hyperparamètre, ni architecture, ni moment d’arrêt. Chaque consultation supplémentaire du test est une fuite d’information qui surestime la performance. Le défi sanctionne cette règle : le test est un verdict qu’on n’ouvre qu’une fois."
       },
       {
         "title": "Standardisation",
-        "body": "Le scaler est ajusté sur les données d’entraînement puis appliqué au test avec les mêmes paramètres, pour éviter toute fuite d’information."
+        "body": "Le StandardScaler est ajusté sur les données d’entraînement puis appliqué au test avec les mêmes paramètres. Recalculer les statistiques sur l’ensemble du jeu serait une fuite : le test transporterait une information que le réel du terrain n’a pas. C’est la règle anti-fuite classique du prétraitement, déjà vue au TP2, et ici elle conditionne le verdict du défi."
       },
       {
         "title": "La frontière linéaire plafonne",
-        "body": "make_moons n’est pas linéairement séparable : la régression logistique, contrainte à une droite, plafonne autour de 85–87 % d’accuracy. C’est la référence du défi."
+        "body": "La régression logistique ne peut tracer qu’une frontière droite dans le plan. Sur make_moons, dont les deux lunes s’entrecroisent, cette contrainte la condamne. En conclusion du défi, son accuracy se stabilise autour de 85 à 87 % : la vraie forme du problème, le huit des deux lunes, reste invisible pour une droite. Nommer cette limite du modèle est la moitié du diagnostic."
       },
       {
         "title": "Une frontière courbe",
-        "body": "Un réseau à une couche cachée d’activations ReLU apprend une frontière courbe : c’est ce que la forme des données exige."
+        "body": "Un réseau à une couche cachée d’activations ReLU apprend une frontière courbe. Chaque neurone découpe un morceau d’espace, et leur superposition forge une frontière composée qui épouse la forme des deux lunes. C’est à cela que servent les couches cachées : gagner de la capacité de représentation au-delà de l’hyperplan. En moyenne, le réseau dépasse la référence linéaire : prévu par la théorie, confirmé sur les données."
       },
       {
         "title": "Deux réglages face à face",
-        "body": "A : petit réseau sans dropout. B : réseau plus large avec dropout. Sur un petit jeu bruité, le dropout régularise trop et ralentit la convergence : il faut beaucoup plus de points pour trancher."
+        "body": "La configuration A est un petit réseau sans dropout ; la configuration B est plus large, avec dropout. Sur un petit jeu bruité, le dropout régularise trop : il ralentit la convergence et accroît la variabilité entre graines. Trancher entre ces deux réglages exigerait beaucoup plus de points de test, plus de mille. La taille d’échantillon compte au moins autant que l’architecture."
       },
       {
         "title": "Marge d’incertitude",
-        "body": "Sur un échantillon fini, la marge 1,96 × √(p(1−p)/n) encadre l’accuracy (par exemple ±6 points pour p ≈ 0,85 et n = 150). Un écart plus petit peut venir du hasard."
+        "body": "Sur un échantillon fini, la marge 1,96 × √(p(1−p)/n) encadre l’accuracy observée p au seuil de confiance de 95 %. Pour p de l’ordre de 0,85 et un test de 150 points, cela donne environ plus ou moins six points. Un écart mesuré de trois ou quatre points entre deux modèles reste dans cette marge : il ne prouve rien. La seule issue : plus de données de test, ou une autre méthodologie."
       },
       {
         "title": "Le compte rendu honnête",
-        "body": "Le réseau est meilleur en moyenne, mais si l’écart observé reste dans la marge, on ne peut pas le garantir : c’est la réponse à donner au client."
+        "body": "Le réseau est meilleur en moyenne, le F1 macro le confirme, et sa variabilité entre graines est maîtrisée. Mais tant que l’écart observé reste dans la marge de bruit, « on ne peut pas le garantir avec cette taille de test » est une réponse professionnelle. Trois phrases suffisent au client : le gain moyen mesuré, l’incertitude qui l’encadre, la décision recommandée : utiliser le réseau en réunissant plus de données, ou attendre des mesures plus larges avant de trancher."
       }
     ],
     "example": "Évaluer les deux modèles sur 3 graines : le réseau dépasse la régression logistique en moyenne, mais l’écart observé (par exemple +5 points) doit être comparé à la marge de bruit 1,96 × √(p(1−p)/n) sur 150 points de test. S’il reste dans cette marge, la conclusion est prudente : gain moyen réel sur le papier, non garanti sur cette taille d’échantillon. Le fichier source est l’énoncé PDF, le notebook fait le compte rendu.",
