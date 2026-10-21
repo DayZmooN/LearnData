@@ -127,6 +127,11 @@
     ],
     "resources": [
       {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp2-binaire/tp2_classification_binaire.html",
+        "kind": "read"
+      },
+      {
         "label": "Notebook source",
         "path": "cours/tp2-binaire/tp2_classification_binaire.ipynb",
         "kind": "download"
@@ -201,6 +206,11 @@
     ],
     "resources": [
       {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp3-multiclasses/tp3_multiclasses.html",
+        "kind": "read"
+      },
+      {
         "label": "Notebook source",
         "path": "cours/tp3-multiclasses/tp3_multiclasses.ipynb",
         "kind": "download"
@@ -270,6 +280,11 @@
       "Extraire les poids de la première couche convolutive (get_weights) et deviner ce que chaque filtre cherche."
     ],
     "resources": [
+      {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp4-cnn/tp4_cnn.html",
+        "kind": "read"
+      },
       {
         "label": "Notebook source",
         "path": "cours/tp4-cnn/tp4_cnn.ipynb",
@@ -346,6 +361,11 @@
     ],
     "resources": [
       {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp5-regularisation/tp5_regularisation.html",
+        "kind": "read"
+      },
+      {
         "label": "Notebook source",
         "path": "cours/tp5-regularisation/tp5_regularisation.ipynb",
         "kind": "download"
@@ -420,6 +440,11 @@
       "Décider, chiffres en main, si le gain de la meilleure configuration est réel ou du même ordre que le bruit."
     ],
     "resources": [
+      {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp6-hyperparametres/tp6_hyperparametres_compression.html",
+        "kind": "read"
+      },
       {
         "label": "Notebook source",
         "path": "cours/tp6-hyperparametres/tp6_hyperparametres_compression.ipynb",
@@ -500,6 +525,11 @@
       "Comparer accuracy moyenne et taille du vocabulaire entre les versions du prétraitement, sur plusieurs découpages."
     ],
     "resources": [
+      {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/tp7-texte/tp7_texte_nlp.html",
+        "kind": "read"
+      },
       {
         "label": "Notebook source",
         "path": "cours/tp7-texte/tp7_texte_nlp.ipynb",
@@ -605,6 +635,11 @@
       "Rédiger en trois phrases la réponse au client, gain garanti ou non."
     ],
     "resources": [
+      {
+        "label": "Ouvrir le notebook HTML",
+        "path": "cours/defi-moons/defi_moons_karim.html",
+        "kind": "read"
+      },
       {
         "label": "Notebook du défi",
         "path": "cours/defi-moons/defi_moons_karim.ipynb",
