@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fa">
+  <meta name="description" content="Étendre la classification à plusieurs catégories avec une sortie softmax.">
+  <title>TP3 · Classification multiclasse · Carnet de cours</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body><script>(function(){var r=document.documentElement,m;try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');m=d&&(d.themeMode==='dark'||d.themeMode==='light')?d.themeMode:null}catch(e){}document.documentElement.dataset.theme=m||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})();</script>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <div class="layout">
+    <aside class="side">
+      <a class="brand" href="../../" aria-label="Retour au catalogue">
+        <span class="brand-mark" aria-hidden="true">C.</span>
+        <span><span class="brand-name">Carnet de cours</span><span class="brand-sub">Formation Data Engineer</span></span>
+      </a>
+      <nav class="sections" aria-label="Navigation principale">
+        <a href="../../"><span aria-hidden="true">▦</span> Catalogue</a>
+        <a href="../../#quiz"><span aria-hidden="true">✓</span> Quiz</a>
+      </nav>
+      <div class="side-label">Sommaire</div>
+      <nav class="lesson-toc" aria-label="Sommaire du cours">
+        <a href="#objectifs">Objectifs</a>
+        <a href="#notions">Notions</a>
+        <a href="#exemple">En pratique</a>
+        <a href="#exercices">Exercices</a>
+        <a href="#ressources">Ressources</a>
+      </nav>
+      <div class="side-actions">
+        <button class="mode" id="mode" type="button">Mode sombre</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contenu" tabindex="-1">
+      <p class="notice">Page à relire : le contenu ci-dessous peut encore évoluer après relecture éditoriale.</p>
+      <header class="hero lesson-hero">
+        <div class="eyebrow">Deep Learning</div>
+        <h1>TP3 · Classification multiclasse</h1>
+        <p class="lede">Étendre la classification à plusieurs catégories avec une sortie softmax.</p>
+        <div class="hero-stats" aria-label="Informations"><span>Travail pratique</span><span>Demi-journée</span><span>Individuel</span><span>En groupe</span><span>À relire</span></div>
+        <div class="tags"><span>Keras</span><span>classification</span><span>softmax</span><span>digits</span><span>matrice de confusion</span></div>
+        <p class="lesson-support">Le support complet de ce cours est le notebook : <a class="resource-link" href="./tp3_multiclasses.html">Ouvrir le notebook HTML</a></p>
+      </header>
+      <article class="lesson">
+        <section id="objectifs"><h2>Ce que tu vas apprendre</h2><ul><li>Passer de 2 à 10 classes : couche de sortie softmax, perte sparse_categorical_crossentropy.</li><li>Aplatir une image pour l’entrer dans un réseau dense et mesurer ce qu’on y perd.</li><li>Lire une matrice de confusion à 10 classes et regarder les erreurs du modèle pour les comprendre.</li></ul></section>
+        <section id="notions"><h2>Les notions, une par une</h2><p class="lesson-intro">Chaque encadré tient en trois ou quatre phrases : lis-les dans l’ordre, elles construisent l’étape suivante.</p><div class="concepts-grid">
+    <article class="concept"><span class="concept-n" aria-hidden="true">1</span>
+      <h3>Softmax</h3><p>La fonction softmax transforme les scores de sortie en probabilités dont la somme vaut 1. La couche de sortie compte autant de neurones que de classes.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">2</span>
+      <h3>Étiquettes entières</h3><p>Pour des classes encodées par des entiers, sparse_categorical_crossentropy évite de convertir les étiquettes en vecteurs one-hot.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">3</span>
+      <h3>La référence</h3><p>La réponse du réseau est l’argmax des probabilités. Avant tout entraînement, les dix probabilités tournent autour de 0,1 : le réseau ne sait encore rien.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">4</span>
+      <h3>Des images aplaties</h3><p>Chaque image 8×8 de load_digits est mise à plat en vecteur de 64 valeurs pour un réseau dense. La géométrie spatiale est perdue : c’est ce que le TP4 corrigera.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">5</span>
+      <h3>Courbes d’apprentissage</h3><p>On suit accuracy et perte sur les jeux d’apprentissage et de validation, époque après époque, avant de se prononcer.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">6</span>
+      <h3>Évaluer sur le test</h3><p>Le test est utilisé une fois, à la fin, pour mesurer la généralisation réelle du modèle entraîné.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">7</span>
+      <h3>Matrice de confusion à 10 classes</h3><p>Affichée en image, elle révèle les paires de chiffres que le modèle confond le plus souvent.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">8</span>
+      <h3>Regarder les erreurs</h3><p>Afficher les images mal classées est aussi important que lire la précision : cela montre si l’erreur était plausible.</p>
+    </article></div></section>
+        <section id="exemple"><h2>En pratique dans ce TP</h2><p class="lesson-example">Reconnaître des chiffres écrits à la main (load_digits, 10 classes) : réseau dense, couche de sortie de 10 neurones en softmax, perte sparse_categorical_crossentropy sans encodage one-hot. Avant l’entraînement, le réseau répond environ 10 % sur chaque classe. Après l’entraînement, la matrice de confusion visuelle fait ressortir les paires de chiffres confondues, et l’affichage des images mal prédites permet de voir pourquoi.</p></section>
+        <section id="exercices"><h2>À toi de jouer</h2><ol><li>Vérifier la forme de la couche de sortie par rapport au nombre de classes.</li><li>Comparer le score de la régression logistique de référence (LogisticRegression) à celui du réseau.</li><li>Afficher trois images mal classées et expliquer en quoi l’erreur était plausible.</li><li>Repérer dans la matrice la paire de classes la plus souvent confondue.</li></ol></section>
+        <section id="ressources"><h2>Supports et ressources</h2><div class="resource-list"><a class="resource-link" href="./tp3_multiclasses.html">Ouvrir le notebook HTML</a><a class="resource-link" href="./tp3_multiclasses.ipynb" download>Notebook source</a></div></section>
+        <section id="quiz"><h2>Vérifier tes connaissances</h2><p class="lesson-quiz-note">Trois ou quatre questions pour vérifier ce que tu retiens. Le score le meilleur est gardé sur cet appareil.</p><a class="button button-primary" href="../../index.html#quiz">Réviser avec le quiz <span aria-hidden="true">→</span></a></section>
+        <nav class="footer-nav" aria-label="Cours voisins"><a href="../tp2-binaire/">← TP2 · Classification binaire</a><a href="../tp4-cnn/">TP4 · Réseaux convolutifs →</a><a href="../../">▦ Catalogue</a></nav>
+      </article>
+    </main>
+  </div><script>(function(){var r=document.documentElement,b=document.getElementById('mode');function paint(mode,saved){r.dataset.theme=mode;b.textContent=mode==='dark'?'Mode clair':'Mode sombre';b.setAttribute('aria-label','Activer le mode '+(mode==='dark'?'clair':'sombre'));}paint(r.dataset.theme||'light');b.addEventListener('click',function(){var m=r.dataset.theme==='dark'?'light':'dark';paint(m);try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');d=(d&&typeof d==='object')?d:{};d.themeMode=m;localStorage.setItem('carnet-data-v1',JSON.stringify(d));}catch(e){}});})();</script>
+</body>
+</html>

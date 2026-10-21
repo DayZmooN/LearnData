@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fa">
+  <meta name="description" content="Construire un premier réseau de neurones pour prédire une valeur continue.">
+  <title>TP1 · Régression · Carnet de cours</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body><script>(function(){var r=document.documentElement,m;try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');m=d&&(d.themeMode==='dark'||d.themeMode==='light')?d.themeMode:null}catch(e){}document.documentElement.dataset.theme=m||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})();</script>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <div class="layout">
+    <aside class="side">
+      <a class="brand" href="../../" aria-label="Retour au catalogue">
+        <span class="brand-mark" aria-hidden="true">C.</span>
+        <span><span class="brand-name">Carnet de cours</span><span class="brand-sub">Formation Data Engineer</span></span>
+      </a>
+      <nav class="sections" aria-label="Navigation principale">
+        <a href="../../"><span aria-hidden="true">▦</span> Catalogue</a>
+        <a href="../../#quiz"><span aria-hidden="true">✓</span> Quiz</a>
+      </nav>
+      <div class="side-label">Sommaire</div>
+      <nav class="lesson-toc" aria-label="Sommaire du cours">
+        <a href="#objectifs">Objectifs</a>
+        <a href="#notions">Notions</a>
+        <a href="#exemple">En pratique</a>
+        <a href="#exercices">Exercices</a>
+        <a href="#ressources">Ressources</a>
+      </nav>
+      <div class="side-actions">
+        <button class="mode" id="mode" type="button">Mode sombre</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contenu" tabindex="-1">
+      <p class="notice">Page à relire : le contenu ci-dessous peut encore évoluer après relecture éditoriale.</p>
+      <header class="hero lesson-hero">
+        <div class="eyebrow">Deep Learning</div>
+        <h1>TP1 · Régression</h1>
+        <p class="lede">Construire un premier réseau de neurones pour prédire une valeur continue.</p>
+        <div class="hero-stats" aria-label="Informations"><span>Travail pratique</span><span>45 min</span><span>Individuel</span><span>En groupe</span><span>À relire</span></div>
+        <div class="tags"><span>Keras</span><span>régression</span><span>MSE</span></div>
+        <p class="lesson-support">Le support complet de ce cours est le notebook : <a class="resource-link" href="./tp1_regression.html">Ouvrir le notebook HTML</a></p>
+      </header>
+      <article class="lesson">
+        <section id="objectifs"><h2>Ce que tu vas apprendre</h2><ul><li>Préparer des variables numériques pour l’apprentissage.</li><li>Construire et entraîner un modèle de régression avec Keras.</li><li>Interpréter une erreur quadratique sur des données de test.</li></ul></section>
+        <section id="notions"><h2>Les notions, une par une</h2><p class="lesson-intro">Chaque encadré tient en trois ou quatre phrases : lis-les dans l’ordre, elles construisent l’étape suivante.</p><div class="concepts-grid">
+    <article class="concept"><span class="concept-n" aria-hidden="true">1</span>
+      <h3>Prédire une quantité</h3><p>En régression, la cible est numérique et continue. Le modèle produit une valeur, par exemple un prix ou une mesure.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">2</span>
+      <h3>Fonction de perte</h3><p>La MSE calcule la moyenne des écarts entre prédictions et valeurs réelles, après élévation au carré. Une erreur importante est ainsi davantage pénalisée.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">3</span>
+      <h3>Échelle des variables</h3><p>La standardisation met les variables sur des échelles comparables. On ajuste ses paramètres sur les données d’entraînement, puis on les réutilise.</p>
+    </article></div></section>
+        <section id="exemple"><h2>En pratique dans ce TP</h2><p class="lesson-example">Pour prédire une consommation à partir de plusieurs mesures, la couche de sortie est généralement un neurone à activation linéaire : la prédiction n’est pas bornée entre 0 et 1.</p></section>
+        <section id="exercices"><h2>À toi de jouer</h2><ol><li>Repérer la variable cible et les variables d’entrée du jeu de données.</li><li>Comparer la perte d’entraînement et la perte de validation après plusieurs époques.</li><li>Expliquer dans l’unité de la cible ce que représente une erreur de prédiction.</li></ol></section>
+        <section id="ressources"><h2>Supports et ressources</h2><div class="resource-list"><a class="resource-link" href="./tp1_regression.html">Ouvrir le notebook HTML</a><a class="resource-link" href="./tp1_regression.ipynb" download>Télécharger le notebook</a></div></section>
+        <section id="quiz"><h2>Vérifier tes connaissances</h2><p class="lesson-quiz-note">Trois ou quatre questions pour vérifier ce que tu retiens. Le score le meilleur est gardé sur cet appareil.</p><a class="button button-primary" href="../../index.html#quiz">Réviser avec le quiz <span aria-hidden="true">→</span></a></section>
+        <nav class="footer-nav" aria-label="Cours voisins"><a href="../tp2-binaire/">TP2 · Classification binaire →</a><a href="../../">▦ Catalogue</a></nav>
+      </article>
+    </main>
+  </div><script>(function(){var r=document.documentElement,b=document.getElementById('mode');function paint(mode,saved){r.dataset.theme=mode;b.textContent=mode==='dark'?'Mode clair':'Mode sombre';b.setAttribute('aria-label','Activer le mode '+(mode==='dark'?'clair':'sombre'));}paint(r.dataset.theme||'light');b.addEventListener('click',function(){var m=r.dataset.theme==='dark'?'light':'dark';paint(m);try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');d=(d&&typeof d==='object')?d:{};d.themeMode=m;localStorage.setItem('carnet-data-v1',JSON.stringify(d));}catch(e){}});})();</script>
+</body>
+</html>

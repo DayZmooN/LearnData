@@ -114,7 +114,26 @@ try {
     fail("La page notebook TP1 contient encore une dépendance distante.");
   }
 } catch {
-  fail("Page notebook manquante : cours/tp1_regression.html.");
+  fail("Page notebook manquante : cours/tp1-regression/tp1_regression.html.");
+}
+
+const courseList = Array.isArray(courses) ? courses : [];
+for (const course of courseList) {
+  const pagePath = `cours/${course.id}/index.html`;
+  try {
+    const pageHTML = await readFile(path.join(root, pagePath), "utf8");
+    if (!pageHTML.includes('id="mode"') || !pageHTML.includes('href="../../style.css"')) {
+      fail(`La page de cours ${pagePath} doit utiliser le gabarit du site (style partagé, bouton de mode).`);
+    }
+  } catch {
+    fail(`Page de cours manquante : ${pagePath} (scripts/build-pages.mjs).`);
+  }
+  if (course.status !== "draft") {
+    if (!Array.isArray(course.objectives) || course.objectives.length < 3) fail(`Cours ${course.id} : au moins 3 objectifs attendus.`);
+    if (!Array.isArray(course.concepts) || course.concepts.length < 3) fail(`Cours ${course.id} : au moins 3 notions expliquées attendues.`);
+    if (!Array.isArray(course.exercises) || course.exercises.length < 3) fail(`Cours ${course.id} : au moins 3 exercices attendus.`);
+    if (typeof course.example !== "string" || course.example.length < 80) fail(`Cours ${course.id} : exemple concret trop court pour apprendre.`);
+  }
 }
 
 if (errors.length) {
@@ -122,7 +141,6 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
-  const courseList = Array.isArray(courses) ? courses : [];
   const quizList = Array.isArray(quizzes) ? quizzes : [];
   const resourceCount = courseList.reduce((count, course) => count + (Array.isArray(course.resources) ? course.resources.length : 0), 0);
   console.log(`Validation réussie : ${courseList.length} fiches, ${quizList.length} quiz, ${resourceCount} ressources internes vérifiées.`);

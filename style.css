@@ -240,3 +240,33 @@ dialog::backdrop { background: #111a2c99; backdrop-filter: blur(3px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.lesson-hero { padding-bottom: 1.6rem; }
+.lesson-hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.6rem); }
+.lesson-support { color: var(--muted); font-size: .92rem; margin: .35rem 0 0; }
+.lesson { max-width: 62rem; padding: 1.8rem 0 4rem; }
+.lesson section { margin-top: 2.4rem; }
+.lesson h2 { margin: 0 0 .9rem; font-size: 1.55rem; letter-spacing: -.02em; }
+.lesson ul, .lesson ol { margin: 0; padding-left: 1.25rem; display: grid; gap: .45rem; color: var(--ink); }
+.lesson li::marker { color: var(--accent); font-weight: 700; }
+.lesson-intro { margin: -.3rem 0 1rem; color: var(--muted); font-size: .93rem; }
+.lesson-example { margin: 0; padding: 1.05rem 1.2rem; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--r); background: var(--panel); color: var(--ink); }
+.concepts-grid { display: grid; gap: .75rem; }
+.concept { position: relative; padding: 1rem 1.15rem 1rem 3.15rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); }
+.concept-n { position: absolute; left: .95rem; top: 1.05rem; width: 1.55rem; height: 1.55rem; display: grid; place-items: center; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: .78rem; }
+.concept h3 { margin: .05rem 0 .3rem; font-size: 1.02rem; letter-spacing: -.01em; }
+.concept p { margin: 0; color: var(--ink); font-size: .96rem; }
+.lesson .resource-list { display: flex; flex-wrap: wrap; gap: .5rem; }
+.lesson-quiz-note { margin: 0 0 .9rem; color: var(--muted); }
+.footer-nav { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); }
+.footer-nav a { padding: .5rem .85rem; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); text-decoration: none; font-weight: 600; font-size: .9rem; background: var(--panel); }
+.footer-nav a:hover { border-color: var(--accent); background: var(--accent-soft); }
+.lesson-toc { display: grid; gap: .05rem; }
+.lesson-toc a { padding: .38rem .6rem; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: .88rem; }
+.lesson-toc a:hover { background: var(--panel-soft); color: var(--ink); }
+.course-open { margin-top: .55rem; }
+@media (max-width: 860px) {
+  .lesson-hero h1 { font-size: clamp(2.1rem, 12vw, 3rem); }
+  .concept { padding-left: .95rem; }
+  .concept-n { position: static; display: inline-grid; margin-right: .45rem; }
+}

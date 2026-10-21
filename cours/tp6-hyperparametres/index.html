@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fa">
+  <meta name="description" content="Explorer des réglages de modèle et découvrir des formats de déploiement compacts.">
+  <title>TP6 · Hyperparamètres et compression · Carnet de cours</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body><script>(function(){var r=document.documentElement,m;try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');m=d&&(d.themeMode==='dark'||d.themeMode==='light')?d.themeMode:null}catch(e){}document.documentElement.dataset.theme=m||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})();</script>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <div class="layout">
+    <aside class="side">
+      <a class="brand" href="../../" aria-label="Retour au catalogue">
+        <span class="brand-mark" aria-hidden="true">C.</span>
+        <span><span class="brand-name">Carnet de cours</span><span class="brand-sub">Formation Data Engineer</span></span>
+      </a>
+      <nav class="sections" aria-label="Navigation principale">
+        <a href="../../"><span aria-hidden="true">▦</span> Catalogue</a>
+        <a href="../../#quiz"><span aria-hidden="true">✓</span> Quiz</a>
+      </nav>
+      <div class="side-label">Sommaire</div>
+      <nav class="lesson-toc" aria-label="Sommaire du cours">
+        <a href="#objectifs">Objectifs</a>
+        <a href="#notions">Notions</a>
+        <a href="#exemple">En pratique</a>
+        <a href="#exercices">Exercices</a>
+        <a href="#ressources">Ressources</a>
+      </nav>
+      <div class="side-actions">
+        <button class="mode" id="mode" type="button">Mode sombre</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contenu" tabindex="-1">
+      <p class="notice">Page à relire : le contenu ci-dessous peut encore évoluer après relecture éditoriale.</p>
+      <header class="hero lesson-hero">
+        <div class="eyebrow">Deep Learning</div>
+        <h1>TP6 · Hyperparamètres et compression</h1>
+        <p class="lede">Explorer des réglages de modèle et découvrir des formats de déploiement compacts.</p>
+        <div class="hero-stats" aria-label="Informations"><span>Travail pratique</span><span>Journée</span><span>Individuel</span><span>En groupe</span><span>À relire</span></div>
+        <div class="tags"><span>Keras</span><span>hyperparamètres</span><span>Keras Tuner</span><span>élagage</span><span>TensorFlow Lite</span></div>
+        <p class="lesson-support">Le support complet de ce cours est le notebook : <a class="resource-link" href="./tp6_hyperparametres_compression.html">Ouvrir le notebook HTML</a></p>
+      </header>
+      <article class="lesson">
+        <section id="objectifs"><h2>Ce que tu vas apprendre</h2><ul><li>Distinguer paramètres (appris par le modèle) et hyperparamètres (choisis par vous : lr, neurones, couches, dropout, batch).</li><li>Conduire une recherche aléatoire d’hyperparamètres et trier les essais sur la validation, jamais sur le test.</li><li>Valider une configuration sur plusieurs graines et ne compter que les gains qui dépassent le bruit.</li><li>Compresser un modèle : élagage puis quantification TensorFlow Lite, et chiffrer le compromis précision/taille.</li></ul></section>
+        <section id="notions"><h2>Les notions, une par une</h2><p class="lesson-intro">Chaque encadré tient en trois ou quatre phrases : lis-les dans l’ordre, elles construisent l’étape suivante.</p><div class="concepts-grid">
+    <article class="concept"><span class="concept-n" aria-hidden="true">1</span>
+      <h3>Hyperparamètres</h3><p>Taux d’apprentissage, taille des couches, dropout, batch : tout ce qui est fixé avant l’entraînement, par opposition aux poids que le modèle apprend.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">2</span>
+      <h3>Explorer le taux d’apprentissage</h3><p>Le premier réglage à tester : trop grand, l’entraînement diverge ; trop petit, il stagne. On observe l’effet direct sur les courbes.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">3</span>
+      <h3>Recherche aléatoire</h3><p>Tirer des configurations au hasard (random.choice), entraîner chaque essai, classer les résultats par perte de validation (pd.DataFrame.sort_values). Keras Tuner (RandomSearch) automatise la même démarche.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">4</span>
+      <h3>Validation, jamais le test</h3><p>Les essais se comparent sur une métrique de validation. Le jeu de test sert une seule fois, à la fin, pour évaluer le modèle retenu.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">5</span>
+      <h3>Plusieurs graines</h3><p>Une configuration retenue doit être réentraînée avec plusieurs graines : seule la moyenne, comparée à l’écart-type, décide si le gain est réel.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">6</span>
+      <h3>Élagage (pruning)</h3><p>Mettre à zéro une partie des poids (par exemple 80 %) donne un modèle creux : presque aucune perte de précision, et un poids total exploitable pour la compression.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">7</span>
+      <h3>Quantification</h3><p>tf.lite.TFLiteConverter enregistre un modèle TensorFlow Lite où les poids 32 bits deviennent 8 bits : fichier bien plus léger, précision à comparer avec Interpreter.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">8</span>
+      <h3>Le compromis à chiffrer</h3><p>Pour chaque version (départ, meilleure config, élaguée, quantifiée) : précision sur le test et taille du fichier (os.path.getsize). Un gain ne compte que s’il dépasse le bruit.</p>
+    </article></div></section>
+        <section id="exemple"><h2>En pratique dans ce TP</h2><p class="lesson-example">Modèle de départ : 2 couches, 32 neurones, lr = 0,001. La recherche aléatoire teste plusieurs taux d’apprentissage et tailles de couches, classe les essais sur la validation puis la meilleure configuration est revérifiée sur plusieurs graines. Enfin : élagage (80 % des poids à zéro), quantification en .tflite, et un tableau final qui met face à face précision du test et taille du fichier pour chaque version.</p></section>
+        <section id="exercices"><h2>À toi de jouer</h2><ol><li>Compléter le tableau de synthèse du notebook (précision de test et taille pour chaque version du modèle).</li><li>Expliquer pourquoi le jeu de test ne doit pas servir à choisir le meilleur essai.</li><li>Comparer taille et précision du modèle avant et après quantification.</li><li>Décider, chiffres en main, si le gain de la meilleure configuration est réel ou du même ordre que le bruit.</li></ol></section>
+        <section id="ressources"><h2>Supports et ressources</h2><div class="resource-list"><a class="resource-link" href="./tp6_hyperparametres_compression.html">Ouvrir le notebook HTML</a><a class="resource-link" href="./tp6_hyperparametres_compression.ipynb" download>Notebook source</a><a class="resource-link" href="./modele_final.keras" download>Modèle Keras</a><a class="resource-link" href="./modele_quantifie.tflite" download>Modèle TensorFlow Lite</a></div></section>
+        <section id="quiz"><h2>Vérifier tes connaissances</h2><p class="lesson-quiz-note">Trois ou quatre questions pour vérifier ce que tu retiens. Le score le meilleur est gardé sur cet appareil.</p><a class="button button-primary" href="../../index.html#quiz">Réviser avec le quiz <span aria-hidden="true">→</span></a></section>
+        <nav class="footer-nav" aria-label="Cours voisins"><a href="../tp5-regularisation/">← TP5 · Régularisation</a><a href="../tp7-texte/">TP7 · Texte et NLP →</a><a href="../../">▦ Catalogue</a></nav>
+      </article>
+    </main>
+  </div><script>(function(){var r=document.documentElement,b=document.getElementById('mode');function paint(mode,saved){r.dataset.theme=mode;b.textContent=mode==='dark'?'Mode clair':'Mode sombre';b.setAttribute('aria-label','Activer le mode '+(mode==='dark'?'clair':'sombre'));}paint(r.dataset.theme||'light');b.addEventListener('click',function(){var m=r.dataset.theme==='dark'?'light':'dark';paint(m);try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');d=(d&&typeof d==='object')?d:{};d.themeMode=m;localStorage.setItem('carnet-data-v1',JSON.stringify(d));}catch(e){}});})();</script>
+</body>
+</html>

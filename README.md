@@ -43,7 +43,7 @@ LearnData/
 └── build_notebooks.py, requirements.txt                   (génération des pages HTML)
 ```
 
-`<cours-id>` reprend exactement le champ `id` de la fiche dans `content/courses.json`. Un notebook ne s’ouvre qu’après conversion : `pip install nbconvert nbformat` puis `python build_notebooks.py`.
+`<cours-id>` reprend exactement le champ `id` de la fiche dans `content/courses.json`. Un notebook ne s’ouvre qu’après conversion : `pip install nbconvert nbformat` puis `python build_notebooks.py`. Une page de cours lisible (notions, exemple, exercices, ressources, quiz) est générée pour chaque fiche : `node scripts/build-pages.mjs` produit `cours/<cours-id>/index.html` ; le validateur refuse une fiche publiée sans page complète ni pages de notebook hors ligne.
 
 ## Génération de contenu assistée par IA (hors du site)
 

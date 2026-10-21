@@ -100,6 +100,7 @@ function renderCourse(course) {
     <p class="card-description">${escapeHTML(course.description)}</p>
     <div class="card-meta"><span>${escapeHTML(course.theme)}</span><span>${escapeHTML(course.duration)}</span><span>${course.audience.includes("groupe") ? "Individuel & groupe" : "Individuel"}</span></div>
     <div class="tags">${course.tags.map(tag => `<span>${escapeHTML(tag)}</span>`).join("")}</div>
+    <a class="button button-quiet course-open" href="cours/${escapeHTML(course.id)}/">Voir le cours complet <span aria-hidden="true">→</span></a>
     <details class="course-details">
       <summary>Découvrir le contenu <span aria-hidden="true">＋</span></summary>
       <div class="course-body">

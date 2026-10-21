@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fa">
+  <meta name="description" content="Prédire l’une de deux classes et lire les métriques d’évaluation.">
+  <title>TP2 · Classification binaire · Carnet de cours</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body><script>(function(){var r=document.documentElement,m;try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');m=d&&(d.themeMode==='dark'||d.themeMode==='light')?d.themeMode:null}catch(e){}document.documentElement.dataset.theme=m||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')})();</script>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <div class="layout">
+    <aside class="side">
+      <a class="brand" href="../../" aria-label="Retour au catalogue">
+        <span class="brand-mark" aria-hidden="true">C.</span>
+        <span><span class="brand-name">Carnet de cours</span><span class="brand-sub">Formation Data Engineer</span></span>
+      </a>
+      <nav class="sections" aria-label="Navigation principale">
+        <a href="../../"><span aria-hidden="true">▦</span> Catalogue</a>
+        <a href="../../#quiz"><span aria-hidden="true">✓</span> Quiz</a>
+      </nav>
+      <div class="side-label">Sommaire</div>
+      <nav class="lesson-toc" aria-label="Sommaire du cours">
+        <a href="#objectifs">Objectifs</a>
+        <a href="#notions">Notions</a>
+        <a href="#exemple">En pratique</a>
+        <a href="#exercices">Exercices</a>
+        <a href="#ressources">Ressources</a>
+      </nav>
+      <div class="side-actions">
+        <button class="mode" id="mode" type="button">Mode sombre</button>
+      </div>
+    </aside>
+
+    <main class="main" id="contenu" tabindex="-1">
+      <p class="notice">Page à relire : le contenu ci-dessous peut encore évoluer après relecture éditoriale.</p>
+      <header class="hero lesson-hero">
+        <div class="eyebrow">Deep Learning</div>
+        <h1>TP2 · Classification binaire</h1>
+        <p class="lede">Prédire l’une de deux classes et lire les métriques d’évaluation.</p>
+        <div class="hero-stats" aria-label="Informations"><span>Travail pratique</span><span>Demi-journée</span><span>Individuel</span><span>En groupe</span><span>À relire</span></div>
+        <div class="tags"><span>Keras</span><span>classification</span><span>sigmoïde</span><span>matrice de confusion</span><span>ROC</span></div>
+        <p class="lesson-support">Le support complet de ce cours est le notebook : <a class="resource-link" href="./tp2_classification_binaire.html">Ouvrir le notebook HTML</a></p>
+      </header>
+      <article class="lesson">
+        <section id="objectifs"><h2>Ce que tu vas apprendre</h2><ul><li>Construire un réseau de classification binaire : sortie sigmoïde, perte binary_crossentropy.</li><li>Découper et standardiser les données avec les statistiques de l’apprentissage seul.</li><li>Lire une matrice de confusion et calculer précision et rappel à la main.</li><li>Déplacer le seuil de décision, comprendre le compromis entre faux positifs et faux négatifs, et lire une courbe ROC.</li></ul></section>
+        <section id="notions"><h2>Les notions, une par une</h2><p class="lesson-intro">Chaque encadré tient en trois ou quatre phrases : lis-les dans l’ordre, elles construisent l’étape suivante.</p><div class="concepts-grid">
+    <article class="concept"><span class="concept-n" aria-hidden="true">1</span>
+      <h3>Probabilité de classe</h3><p>Une sortie sigmoïde fournit une valeur entre 0 et 1. Un seuil, souvent 0,5, transforme cette probabilité en décision de classe.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">2</span>
+      <h3>Découper et standardiser</h3><p>Le jeu de test ne doit jamais être vu pendant l’ajustement : le StandardScaler est ajusté sur le seul jeu d’apprentissage, puis appliqué tel quel au test.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">3</span>
+      <h3>La référence à battre</h3><p>Une régression logistique (LogisticRegression) donne un score de référence très simple. Un réseau ne vaut la peine que s’il dépasse cette référence.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">4</span>
+      <h3>Entropie croisée binaire</h3><p>binary_crossentropy pénalise les probabilités attribuées aux classes réelles. Elle est adaptée à une sortie binaire.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">5</span>
+      <h3>Construire le réseau</h3><p>Des couches denses avec activation ReLU, puis un neurone unique avec sigmoïde en sortie : une seule probabilité à interpréter.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">6</span>
+      <h3>Entraîner avec arrêt précoce</h3><p>EarlyStopping surveille la perte de validation : l’entraînement s’arrête quand elle cesse de s’améliorer et les meilleurs poids sont restaurés.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">7</span>
+      <h3>Matrice de confusion</h3><p>Comparée à la main sur le test : VP, VN, FP, FN. Précision = « quand j’annonce, ai-je raison ? ». Rappel = « combien en ai-je retrouvé ? ».</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">8</span>
+      <h3>Le seuil de décision</h3><p>Le déplacer règle le compromis précision/rappel : monter le seuil réduit les faux positifs mais augmente les faux négatifs. Le contexte décide de l’erreur la plus grave.</p>
+    </article>
+    <article class="concept"><span class="concept-n" aria-hidden="true">9</span>
+      <h3>La courbe ROC</h3><p>Elle trace le taux de vrais positifs contre le taux de faux positifs pour tous les seuils. L’AUC résume cette courbe en un seul chiffre.</p>
+    </article></div></section>
+        <section id="exemple"><h2>En pratique dans ce TP</h2><p class="lesson-example">Sur des mesures de tumeurs (load_breast_cancer) : entraîner le réseau avec EarlyStopping, prédire une probabilité (par exemple 0,82) et la comparer au seuil 0,5 pour annoncer « maligne ». Recompter FP et FN dans la matrice, puis monter le seuil à 0,7 : les faux négatifs augmentent pendant que les faux positifs baissent. La courbe ROC trace ce compromis pour tous les seuils possibles.</p></section>
+        <section id="exercices"><h2>À toi de jouer</h2><ol><li>Recalculer à la main précision et rappel à partir de la matrice affichée dans le notebook.</li><li>Déplacer le seuil (0,3 et 0,7) et consigner l’effet exact sur les faux positifs et les faux négatifs.</li><li>Comparer accuracy d’une régression logistique et du réseau ; expliquer l’écart ou son absence.</li><li>Expliquer, dans un contexte médical, quel type d’erreur coûte le plus cher et pourquoi.</li></ol></section>
+        <section id="ressources"><h2>Supports et ressources</h2><div class="resource-list"><a class="resource-link" href="./tp2_classification_binaire.html">Ouvrir le notebook HTML</a><a class="resource-link" href="./tp2_classification_binaire.ipynb" download>Notebook source</a></div></section>
+        <section id="quiz"><h2>Vérifier tes connaissances</h2><p class="lesson-quiz-note">Trois ou quatre questions pour vérifier ce que tu retiens. Le score le meilleur est gardé sur cet appareil.</p><a class="button button-primary" href="../../index.html#quiz">Réviser avec le quiz <span aria-hidden="true">→</span></a></section>
+        <nav class="footer-nav" aria-label="Cours voisins"><a href="../tp1-regression/">← TP1 · Régression</a><a href="../tp3-multiclasses/">TP3 · Classification multiclasse →</a><a href="../../">▦ Catalogue</a></nav>
+      </article>
+    </main>
+  </div><script>(function(){var r=document.documentElement,b=document.getElementById('mode');function paint(mode,saved){r.dataset.theme=mode;b.textContent=mode==='dark'?'Mode clair':'Mode sombre';b.setAttribute('aria-label','Activer le mode '+(mode==='dark'?'clair':'sombre'));}paint(r.dataset.theme||'light');b.addEventListener('click',function(){var m=r.dataset.theme==='dark'?'light':'dark';paint(m);try{var d=JSON.parse(localStorage.getItem('carnet-data-v1')||'null');d=(d&&typeof d==='object')?d:{};d.themeMode=m;localStorage.setItem('carnet-data-v1',JSON.stringify(d));}catch(e){}});})();</script>
+</body>
+</html>
